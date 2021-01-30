@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "outDir": "./build",
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src"]
+}
