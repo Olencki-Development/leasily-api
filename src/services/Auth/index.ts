@@ -2,12 +2,20 @@ import { RegisterForm, LoginForm, VerifyForm } from './types'
 import container from '../../container'
 import { IUser, IUserModel } from '../../models/User'
 import Unauthorized from '../../errors/Unauthorized'
+import Verify from '../Verify'
 
-class Auth {
+export default class Auth {
   async register(form: RegisterForm): Promise<IUser> {
     const User = container.make('models').User as IUserModel
 
-    return User.create(form)
+    const user = await User.create(form)
+
+    const verify = container.make<Verify>(Verify)
+    await verify.requestEmail({
+      user
+    })
+
+    return user
   }
 
   async login(form: LoginForm): Promise<IUser> {
@@ -19,6 +27,11 @@ class Auth {
     if (!user) {
       throw new Unauthorized()
     }
+
+    const verify = container.make<Verify>(Verify)
+    await verify.requestEmail({
+      user
+    })
 
     return user
   }
@@ -32,6 +45,12 @@ class Auth {
     if (!user) {
       throw new Unauthorized()
     }
+
+    const verify = container.make<Verify>(Verify)
+    verify.validateEmail({
+      user,
+      code: form.code
+    })
 
     return user
   }
