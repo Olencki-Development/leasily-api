@@ -44,7 +44,7 @@ const ApplicationSchema = new Schema<IApplication>(
 )
 
 export const modelName = 'Application'
-export const ApplicantModel = model<IApplication, IApplicationModel>(
+export const ApplicationModel = model<IApplication, IApplicationModel>(
   modelName,
   ApplicationSchema
 )

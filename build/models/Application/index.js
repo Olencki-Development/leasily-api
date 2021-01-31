@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ApplicantModel = exports.modelName = exports.APPLICATION_STAGES = void 0;
+exports.ApplicationModel = exports.modelName = exports.APPLICATION_STAGES = void 0;
 const mongoose_1 = require("mongoose");
 const Property_1 = require("./Property");
 const Lease_1 = require("./Lease");
@@ -32,5 +32,5 @@ const ApplicationSchema = new mongoose_1.Schema({
     timestamps: true
 });
 exports.modelName = 'Application';
-exports.ApplicantModel = mongoose_1.model(exports.modelName, ApplicationSchema);
+exports.ApplicationModel = mongoose_1.model(exports.modelName, ApplicationSchema);
 //# sourceMappingURL=index.js.map
