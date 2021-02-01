@@ -1,15 +1,18 @@
 import { RequestEmailForm, ValidateEmailForm } from './types'
 import Unauthorized from '../../errors/Unauthorized'
+import container from '../../container'
+import Email from '../Email'
 
 export default class Verify {
   private _codes: Record<string, string> = {}
+  private _email: Email = container.make<Email>('email')
 
   async requestEmail(form: RequestEmailForm) {
     const code = this._getCode()
 
     this._codes[form.user.id] = code
 
-    // TOOD: implement send email with code
+    await this._sendVerifyEmail(form.user.email, code)
 
     return code
   }
@@ -35,5 +38,16 @@ export default class Verify {
       result += characters.charAt(Math.floor(Math.random() * charactersLength))
     }
     return result
+  }
+
+  private async _sendVerifyEmail(email: string, code: string) {
+    await this._email.send({
+      email,
+      subject: 'Leasily Verification Code',
+      body: `
+        Your Leasily verification code is:
+        ${code}
+      `
+    })
   }
 }
