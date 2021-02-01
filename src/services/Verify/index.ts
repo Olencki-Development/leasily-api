@@ -1,16 +1,22 @@
-import { RequestEmailForm, ValidateEmailForm } from './types'
+import {
+  RequestEmailForm,
+  ValidateEmailForm,
+  VerificationMatch,
+  VerificationPayload
+} from './types'
 import Unauthorized from '../../errors/Unauthorized'
 import container from '../../container'
 import Email from '../Email'
 
+const TEN_MINUTES_IN_MS = 600000
+
 export default class Verify {
-  private _codes: Record<string, string> = {}
+  private _codes: VerificationMatch = {}
   private _email: Email = container.make<Email>('email')
 
   async requestEmail(form: RequestEmailForm) {
     const code = this._getCode()
-
-    this._codes[form.user.id] = code
+    this._setCodeForId(form.user.id, code)
 
     await this._sendVerifyEmail(form.user.email, code)
 
@@ -18,14 +24,9 @@ export default class Verify {
   }
 
   validateEmail(form: ValidateEmailForm): boolean {
-    const code = this._codes[form.user.id]
-    if (code !== form.code) {
-      throw new Unauthorized()
-    }
+    this._getPayloadForIdAndCode(form.user.id, form.code)
 
     delete this._codes[form.user.id]
-
-    // TOOD: implement token timeout check
 
     return true
   }
@@ -40,6 +41,35 @@ export default class Verify {
     return result
   }
 
+  private _setCodeForId(id: string, code: string) {
+    this._codes[id] = {
+      dateTime: new Date(),
+      code
+    }
+  }
+
+  private _getPayloadForIdAndCode(
+    id: string,
+    code: string
+  ): VerificationPayload {
+    const payload = this._codes[id]
+    if (!payload) {
+      throw new Unauthorized()
+    }
+
+    if (code !== payload.code) {
+      throw new Unauthorized()
+    }
+
+    const now = new Date()
+    const diffInMS = now.getTime() - payload.dateTime.getTime()
+    if (diffInMS > TEN_MINUTES_IN_MS) {
+      throw new Unauthorized()
+    }
+
+    return payload
+  }
+
   private async _sendVerifyEmail(email: string, code: string) {
     await this._email.send({
       email,
@@ -47,6 +77,8 @@ export default class Verify {
       body: `
         Your Leasily verification code is:
         ${code}
+
+        * This code will expire after 10 minutes.
       `
     })
   }

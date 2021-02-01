@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Unauthorized_1 = require("../../errors/Unauthorized");
 const container_1 = require("../../container");
+const TEN_MINUTES_IN_MS = 600000;
 class Verify {
     constructor() {
         this._codes = {};
@@ -9,17 +10,13 @@ class Verify {
     }
     async requestEmail(form) {
         const code = this._getCode();
-        this._codes[form.user.id] = code;
+        this._setCodeForId(form.user.id, code);
         await this._sendVerifyEmail(form.user.email, code);
         return code;
     }
     validateEmail(form) {
-        const code = this._codes[form.user.id];
-        if (code !== form.code) {
-            throw new Unauthorized_1.default();
-        }
+        this._getPayloadForIdAndCode(form.user.id, form.code);
         delete this._codes[form.user.id];
-        // TOOD: implement token timeout check
         return true;
     }
     _getCode(length = 6) {
@@ -31,6 +28,27 @@ class Verify {
         }
         return result;
     }
+    _setCodeForId(id, code) {
+        this._codes[id] = {
+            dateTime: new Date(),
+            code
+        };
+    }
+    _getPayloadForIdAndCode(id, code) {
+        const payload = this._codes[id];
+        if (!payload) {
+            throw new Unauthorized_1.default();
+        }
+        if (code !== payload.code) {
+            throw new Unauthorized_1.default();
+        }
+        const now = new Date();
+        const diffInMS = now.getTime() - payload.dateTime.getTime();
+        if (diffInMS > TEN_MINUTES_IN_MS) {
+            throw new Unauthorized_1.default();
+        }
+        return payload;
+    }
     async _sendVerifyEmail(email, code) {
         await this._email.send({
             email,
@@ -38,6 +56,8 @@ class Verify {
             body: `
         Your Leasily verification code is:
         ${code}
+
+        * This code will expire after 10 minutes.
       `
         });
     }
