@@ -10,10 +10,12 @@ class Email {
         this._fromEmail = email;
     }
     async send(form) {
+        this._client;
         return this._client.send({
             to: form.email,
             from: this._fromEmail,
-            text: form.body
+            text: form.body,
+            attachments: form.attachments
         });
     }
 }

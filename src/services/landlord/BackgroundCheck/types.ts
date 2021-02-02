@@ -23,3 +23,17 @@ export type RequestForm = {
     ipAddress: string
   }
 }
+
+export type WebhookForm = {
+  transactionId: number
+  orderId: string
+  orderStatus: 'Canceled' | 'Partial' | 'Pending' | 'Ready' | 'Error'
+  paymentId?: string
+  paymentAmount?: number
+  customerReferenceId: string
+  referenceId: string
+  referenceText?: string
+  filename: string
+  fileformat: 'pdf'
+  file: ArrayBuffer
+}

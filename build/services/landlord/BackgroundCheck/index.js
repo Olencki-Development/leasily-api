@@ -5,6 +5,9 @@ const Application_1 = require("../../../models/Application");
 const ApplicationPendingError_1 = require("../../../errors/ApplicationPendingError");
 const NotFoundError_1 = require("../../../errors/NotFoundError");
 class BackgroundCheck {
+    constructor() {
+        this._email = container_1.default.make('email');
+    }
     async request(form) {
         const Landlord = container_1.default.make('models').Landlord;
         const landlord = await Landlord.findOne({
@@ -89,6 +92,29 @@ class BackgroundCheck {
             });
         }
         application.stage = Application_1.APPLICATION_STAGES.REQUESTING_BACKGROUND_CHECK;
+        return application.save();
+    }
+    async webhookCallback(form) {
+        // TODO: implement better handling of the form data
+        const Landlord = container_1.default.make('models').Landlord;
+        const landlord = await Landlord.findOne({
+            id: form.customerReferenceId
+        })
+            .populate('application')
+            .populate('user')
+            .exec();
+        if (!landlord) {
+            throw new NotFoundError_1.default();
+        }
+        if (form.file) {
+            const attachment = {
+                content: form.file,
+                filename: form.filename,
+                type: "application/pdf",
+                disposition: "attachment"
+            };
+            await this._notifyLandlord(landlord, attachment);
+        }
     }
     async _getApplicants(application) {
         const Applicant = container_1.default.make('models').Applicant;
@@ -97,6 +123,16 @@ class BackgroundCheck {
         })
             .populate('user')
             .exec();
+    }
+    async _notifyLandlord(landlord, attachment) {
+        await this._email.send({
+            email: landlord.user.email,
+            subject: `Update on Application for ${landlord.application.property.address.street}`,
+            body: `
+        A new version of your report is available.
+      `,
+            attachments: [attachment]
+        });
     }
 }
 exports.default = BackgroundCheck;

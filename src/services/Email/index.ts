@@ -14,10 +14,12 @@ export default class Email {
   }
 
   async send(form: SendForm) {
+    this._client
     return this._client.send({
       to: form.email,
       from: this._fromEmail,
-      text: form.body
+      text: form.body,
+      attachments: form.attachments
     })
   }
 }

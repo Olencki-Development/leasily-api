@@ -1,14 +1,18 @@
-import { RequestForm } from './types'
+import { RequestForm, WebhookForm } from './types'
 import container from '../../../container'
 import { IUser } from '../../../models/User'
-import { ILandlordModel } from '../../../models/Landlord'
+import { ILandlord, ILandlordModel } from '../../../models/Landlord'
 import { IApplicant, IApplicantModel } from '../../../models/Applicant'
 import RentPrep from '../../RentPrep'
 import { IApplication, APPLICATION_STAGES } from '../../../models/Application'
 import ApplicationPendingError from '../../../errors/ApplicationPendingError'
 import NotFoundError from '../../../errors/NotFoundError'
+import Email from '../../Email'
+import { FileAttachment } from '../../Email/types'
 
 export default class BackgroundCheck {
+  private _email: Email = container.make<Email>('email')
+
   async request(form: RequestForm) {
     const Landlord = container.make('models').Landlord as ILandlordModel
     const landlord = await Landlord.findOne({
@@ -109,6 +113,31 @@ export default class BackgroundCheck {
     }
 
     application.stage = APPLICATION_STAGES.REQUESTING_BACKGROUND_CHECK
+    return application.save()
+  }
+
+  async webhookCallback(form: WebhookForm) {
+    // TODO: implement better handling of the form data
+    const Landlord = container.make('models').Landlord as ILandlordModel
+    const landlord = await Landlord.findOne({
+      id: form.customerReferenceId
+    })
+      .populate('application')
+      .populate('user')
+      .exec()
+    if (!landlord) {
+      throw new NotFoundError()
+    }
+
+    if (form.file) {
+      const attachment = {
+        content: form.file,
+        filename: form.filename,
+        type: 'application/pdf',
+        disposition: 'attachment'
+      }
+      await this._notifyLandlord(landlord, attachment)
+    }
   }
 
   private async _getApplicants(
@@ -121,5 +150,21 @@ export default class BackgroundCheck {
     })
       .populate('user')
       .exec()
+  }
+
+  private async _notifyLandlord(
+    landlord: ILandlord,
+    attachment: FileAttachment
+  ) {
+    await this._email.send({
+      email: (landlord.user as IUser).email,
+      subject: `Update on Application for ${
+        (landlord.application as IApplication).property.address.street
+      }`,
+      body: `
+        A new version of your report is available.
+      `,
+      attachments: [attachment]
+    })
   }
 }
