@@ -3,12 +3,17 @@ import { IApplication } from '../../../../models/Application'
 import { IUser } from '../../../../models/User'
 import { ILandlord } from '../../../../models/Landlord'
 
-export type RetrieveForm = {
+export type AllForm = {
   user: IUser
+}
+
+export type ByIdForm = {
+  user: IUser
+  applicationId: string
 }
 
 export type RetrieveReturnType = {
   applicants: IApplicant[]
   application: IApplication
   landlord: ILandlord
-}[]
+}
