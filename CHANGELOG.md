@@ -22,3 +22,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - NotFoundError
   - UnauthorizedError
   - ApplicationResolvedError
+- Add background check service

@@ -3,31 +3,46 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../../container");
 const Application_1 = require("../../../../models/Application");
 const ApplicationResolvedError_1 = require("../../../../errors/ApplicationResolvedError");
+const NotFoundError_1 = require("../../../../errors/NotFoundError");
 class ApplicationDecision {
     constructor() {
         this._email = container_1.default.make('email');
     }
     async approve(form) {
-        if (this._hasDecisionBeenMade(form.application)) {
+        const Application = container_1.default.make('models').Application;
+        const application = await Application.findOne({
+            id: form.applicationId
+        });
+        if (!application) {
+            throw new NotFoundError_1.default();
+        }
+        if (this._hasDecisionBeenMade(application)) {
             throw new ApplicationResolvedError_1.default();
         }
-        form.application.stage = Application_1.APPLICATION_STAGES.RENTED;
-        const applicants = await this._getApplicants(form.application);
+        application.stage = Application_1.APPLICATION_STAGES.RENTED;
+        const applicants = await this._getApplicants(application);
         for (const applicant of applicants) {
-            await this._sendApprovedEmail(form.application, applicant);
+            await this._sendApprovedEmail(application, applicant);
         }
-        return form.application.save();
+        return application.save();
     }
     async decline(form) {
-        if (this._hasDecisionBeenMade(form.application)) {
+        const Application = container_1.default.make('models').Application;
+        const application = await Application.findOne({
+            id: form.applicationId
+        });
+        if (!application) {
+            throw new NotFoundError_1.default();
+        }
+        if (this._hasDecisionBeenMade(application)) {
             throw new ApplicationResolvedError_1.default();
         }
-        form.application.isClosed = true;
-        const applicants = await this._getApplicants(form.application);
+        application.isClosed = true;
+        const applicants = await this._getApplicants(application);
         for (const applicant of applicants) {
-            await this._sendDeclinedEmail(form.application, applicant);
+            await this._sendDeclinedEmail(application, applicant);
         }
-        return form.application.save();
+        return application.save();
     }
     _hasDecisionBeenMade(application) {
         if (application.isClosed) {

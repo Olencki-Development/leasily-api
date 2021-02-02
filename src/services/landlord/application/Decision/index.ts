@@ -5,41 +5,61 @@ import { IUser } from '../../../../models/User'
 import { IApplicant, IApplicantModel } from '../../../../models/Applicant'
 import {
   IApplication,
+  IApplicationModel,
   APPLICATION_STAGES
 } from '../../../../models/Application'
 import ApplicationResolvedError from '../../../../errors/ApplicationResolvedError'
+import NotFoundError from '../../../../errors/NotFoundError'
 
 export default class ApplicationDecision {
   private _email: Email = container.make<Email>('email')
 
   async approve(form: ApproveForm): Promise<IApplication> {
-    if (this._hasDecisionBeenMade(form.application)) {
+    const Application = container.make('models')
+      .Application as IApplicationModel
+    const application = await Application.findOne({
+      id: form.applicationId
+    })
+    if (!application) {
+      throw new NotFoundError()
+    }
+
+    if (this._hasDecisionBeenMade(application)) {
       throw new ApplicationResolvedError()
     }
 
-    form.application.stage = APPLICATION_STAGES.RENTED
+    application.stage = APPLICATION_STAGES.RENTED
 
-    const applicants = await this._getApplicants(form.application)
+    const applicants = await this._getApplicants(application)
     for (const applicant of applicants) {
-      await this._sendApprovedEmail(form.application, applicant)
+      await this._sendApprovedEmail(application, applicant)
     }
 
-    return form.application.save()
+    return application.save()
   }
 
   async decline(form: DeclineForm): Promise<IApplication> {
-    if (this._hasDecisionBeenMade(form.application)) {
+    const Application = container.make('models')
+      .Application as IApplicationModel
+    const application = await Application.findOne({
+      id: form.applicationId
+    })
+    if (!application) {
+      throw new NotFoundError()
+    }
+
+    if (this._hasDecisionBeenMade(application)) {
       throw new ApplicationResolvedError()
     }
 
-    form.application.isClosed = true
+    application.isClosed = true
 
-    const applicants = await this._getApplicants(form.application)
+    const applicants = await this._getApplicants(application)
     for (const applicant of applicants) {
-      await this._sendDeclinedEmail(form.application, applicant)
+      await this._sendDeclinedEmail(application, applicant)
     }
 
-    return form.application.save()
+    return application.save()
   }
 
   private _hasDecisionBeenMade(application: IApplication): boolean {
