@@ -15,6 +15,8 @@ export interface IApplication extends LeasilyDocument {
   lease: ILease
   stage: APPLICATION_STAGES
   isClosed: boolean
+  fee: number
+  waitPeriodInDays: number
 }
 
 export interface IApplicationModel extends LeasilyModel<IApplication> {}
@@ -36,6 +38,14 @@ const ApplicationSchema = new Schema<IApplication>(
     lease: {
       type: LeaseSchema,
       required: true
+    },
+    fee: {
+      type: Number,
+      required: true
+    },
+    waitPeriodInDays: {
+      type: Number,
+      default: 5
     }
   },
   {

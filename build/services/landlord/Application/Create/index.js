@@ -15,7 +15,9 @@ class ApplicationCreate {
             .Application;
         const application = await Application.create({
             property: form.property,
-            lease: form.lease
+            lease: form.lease,
+            waitPeriodInDays: form.waitPeriodInDays,
+            fee: form.fee
         });
         const applicants = [];
         for (const applicantForm of form.applicants) {

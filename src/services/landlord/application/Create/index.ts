@@ -25,7 +25,9 @@ export default class ApplicationCreate {
 
     const application = await Application.create({
       property: form.property,
-      lease: form.lease
+      lease: form.lease,
+      waitPeriodInDays: form.waitPeriodInDays,
+      fee: form.fee
     })
 
     const applicants: IApplicant[] = []

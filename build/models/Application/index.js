@@ -27,6 +27,14 @@ const ApplicationSchema = new mongoose_1.Schema({
     lease: {
         type: Lease_1.LeaseSchema,
         required: true
+    },
+    fee: {
+        type: Number,
+        required: true
+    },
+    waitPeriodInDays: {
+        type: Number,
+        default: 5
     }
 }, {
     timestamps: true

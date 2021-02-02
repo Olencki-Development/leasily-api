@@ -26,6 +26,8 @@ export type CreateForm = {
   }
   applicants: ApplicantForm[]
   user: IUser
+  waitPeriodInDays: number
+  fee: number
 }
 
 export type ApplicantForm = {
