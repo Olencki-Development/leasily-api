@@ -1,6 +1,7 @@
-import { Schema, Document } from 'mongoose'
+import { Schema } from 'mongoose'
+import { LeasilyDocument } from '../plugins'
 
-export interface IProperty extends Document {
+export interface IProperty extends LeasilyDocument {
   address: {
     street: string
     city: string
@@ -8,9 +9,6 @@ export interface IProperty extends Document {
     zipcode: string
   }
   unit: string | null
-
-  createdAt: Date
-  updatedAt: Date
 }
 
 export const PropertySchema = new Schema<IProperty>(

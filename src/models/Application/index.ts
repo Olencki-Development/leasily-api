@@ -1,4 +1,5 @@
-import { Schema, Document, model, Model } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import { LeasilyModel, LeasilyDocument } from '../plugins'
 import { PropertySchema, IProperty } from './Property'
 import { LeaseSchema, ILease } from './Lease'
 
@@ -9,15 +10,12 @@ export enum APPLICATION_STAGES {
   RENTED
 }
 
-export interface IApplication extends Document {
+export interface IApplication extends LeasilyDocument {
   property: IProperty
   lease: ILease
-
-  createdAt: Date
-  updatedAt: Date
 }
 
-export interface IApplicationModel extends Model<IApplication> {}
+export interface IApplicationModel extends LeasilyModel<IApplication> {}
 
 const ApplicationSchema = new Schema<IApplication>(
   {

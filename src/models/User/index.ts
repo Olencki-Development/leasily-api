@@ -1,15 +1,13 @@
-import { Schema, Document, model, Model } from 'mongoose'
+import { Schema, model } from 'mongoose'
+import { LeasilyModel, LeasilyDocument } from '../plugins'
 
-export interface IUser extends Document {
+export interface IUser extends LeasilyDocument {
   fullName: string
   email: string
   phone: string
-
-  createdAt: Date
-  updatedAt: Date
 }
 
-export interface IUserModel extends Model<IUser> {}
+export interface IUserModel extends LeasilyModel<IUser> {}
 
 const UserSchema = new Schema<IUser>(
   {

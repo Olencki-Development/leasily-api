@@ -1,9 +1,10 @@
-import { Schema, Document } from 'mongoose'
+import { Schema } from 'mongoose'
 import { PetSchema, IPet } from './Pet'
+import { LeasilyDocument } from '../plugins'
 
 type TimeInterval = 'Full Time' | 'Part Time' | 'Student' | 'Umemployed'
 
-export interface IHistory extends Document {
+export interface IHistory extends LeasilyDocument {
   ssn: string
   dob: Date
   pets: IPet[]
@@ -67,9 +68,6 @@ export interface IHistory extends Document {
       interval: TimeInterval | null
     }
   }
-
-  createdAt: Date
-  updatedAt: Date
 }
 
 export const HistorySchema = new Schema<IHistory>(

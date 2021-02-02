@@ -1,6 +1,7 @@
-import { Schema, Document } from 'mongoose'
+import { Schema } from 'mongoose'
+import { LeasilyDocument } from '../plugins'
 
-export interface ILease extends Document {
+export interface ILease extends LeasilyDocument {
   securityDeposit: {
     amount: number
     hasBeenCollected: boolean
@@ -10,9 +11,6 @@ export interface ILease extends Document {
   }
   lengthInMonths: number
   startDate: Date
-
-  createdAt: Date
-  updatedAt: Date
 
   isMonthToMonth(): boolean
 }

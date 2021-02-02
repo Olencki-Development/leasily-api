@@ -1,18 +1,16 @@
-import { Schema, Document, model, Model, Types } from 'mongoose'
+import { Schema, model, Types } from 'mongoose'
+import { LeasilyDocument, LeasilyModel } from '../plugins'
 import { IHistory, HistorySchema } from './History'
 import { IUser, modelName as userModelName } from '../User'
 import { IApplication, modelName as applicationModelName } from '../Application'
 
-export interface IApplicant extends Document {
+export interface IApplicant extends LeasilyDocument {
   history: IHistory
   user: Types.ObjectId | IUser
   application: Types.ObjectId | IApplication
-
-  createdAt: Date
-  updatedAt: Date
 }
 
-export interface IApplicantModel extends Model<IApplicant> {}
+export interface IApplicantModel extends LeasilyModel<IApplicant> {}
 
 const ApplicantSchema = new Schema<IApplicant>(
   {

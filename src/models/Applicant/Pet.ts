@@ -1,12 +1,10 @@
-import { Schema, Document } from 'mongoose'
+import { Schema } from 'mongoose'
+import { LeasilyDocument } from '../plugins'
 
-export interface IPet extends Document {
+export interface IPet extends LeasilyDocument {
   type: string
   breed: string
   name: string
-
-  createdAt: Date
-  updatedAt: Date
 }
 
 export const PetSchema = new Schema<IPet>(
