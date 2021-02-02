@@ -13,6 +13,8 @@ export enum APPLICATION_STAGES {
 export interface IApplication extends LeasilyDocument {
   property: IProperty
   lease: ILease
+  stage: APPLICATION_STAGES
+  isClosed: boolean
 }
 
 export interface IApplicationModel extends LeasilyModel<IApplication> {}
