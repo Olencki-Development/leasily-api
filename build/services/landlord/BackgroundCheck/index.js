@@ -110,8 +110,8 @@ class BackgroundCheck {
             const attachment = {
                 content: form.file,
                 filename: form.filename,
-                type: "application/pdf",
-                disposition: "attachment"
+                type: 'application/pdf',
+                disposition: 'attachment'
             };
             await this._notifyLandlord(landlord, attachment);
         }

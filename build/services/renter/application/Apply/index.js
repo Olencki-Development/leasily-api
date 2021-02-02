@@ -47,8 +47,7 @@ class ApplicationApply {
         const Landlord = container_1.default.make('models').Landlord;
         const landlord = await Landlord.findOne({
             application
-        })
-            .exec();
+        }).exec();
         if (!landlord) {
             return;
         }
