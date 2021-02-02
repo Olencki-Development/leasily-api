@@ -10,7 +10,6 @@ export type RequestParameters = {
 export type RentPrepConfig = {
   isProd: boolean
   apiKey: string
-  RequestParameters: RequestParameters
 }
 
 export type AvailablePackages =
@@ -21,6 +20,29 @@ export type AvailablePackages =
   | 'CorpCreditOnly'
 
 export type CreditCardType = 'visa' | 'amex' | 'discover' | 'mastercard'
+
+export type CreditCard = {
+  cardNumber: string
+  cardSecurity: string
+  cardType: CreditCardType
+  expireMonth: string
+  expireYear: string
+}
+
+export type Customer = {
+  CreditCard: CreditCard
+  IPAddress: string
+  billingCity: string
+  billingState: string
+  billingStreetAddress: string
+  billingZip: string
+  company?: string
+  emailAddress: string
+  firstName: string
+  lastName: string
+  phone?: string
+  referenceId: string
+}
 
 export type LandlordInfo = {
   comments?: string
@@ -37,26 +59,7 @@ export type LandlordInfo = {
 
 export type BackgroundCheckForm = {
   PackageName: AvailablePackages
-  Customer: {
-    CreditCard: {
-      cardNumber: string
-      cardSecurity: string
-      cardType: CreditCardType
-      expireMonth: string
-      expireYear: string
-    }
-    IPAddress: string
-    billingCity: string
-    billingState: string
-    billingStreetAddress: string
-    billingZip: string
-    company?: string
-    emailAddress: string
-    firstName: string
-    lastName: string
-    phone?: string
-    referenceId: string
-  }
+  Customer: Customer
   Applicant: {
     dateOfBirth: Date
     emailAddress?: string
@@ -79,8 +82,5 @@ export type BackgroundCheckForm = {
     supervisorLastName: string
   }
   PreviousLandlord: LandlordInfo
-}
-
-export type RequestForm = BackgroundCheckForm & {
   RequestParameters: RequestParameters
 }

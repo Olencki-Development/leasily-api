@@ -1,4 +1,4 @@
-import { RentPrepConfig, BackgroundCheckForm, RequestForm } from './types'
+import { RentPrepConfig, BackgroundCheckForm } from './types'
 import { AxiosStatic } from 'axios'
 import RentPrepError from './RentPrepError'
 
@@ -12,10 +12,7 @@ export default class RentPrep {
   }
 
   async fetchBackgroundcheck(form: BackgroundCheckForm) {
-    const response = await this._request({
-      ...form,
-      RequestParameters: this._config.RequestParameters
-    })
+    const response = await this._request(form)
 
     if (response.status >= 400) {
       throw new RentPrepError(response)
@@ -32,12 +29,12 @@ export default class RentPrep {
     }
   }
 
-  private _request(data: RequestForm) {
+  private _request(data: BackgroundCheckForm) {
     const url = `${this._getBaseUrl(
       this._config.isProd
     )}/api/screen/backgroundcheck`
 
-    return this._axios.post<RequestForm>(url, {
+    return this._axios.post<BackgroundCheckForm>(url, {
       headers: {
         'Content-Type': 'application/json',
         'x-apiKey': this._config.apiKey

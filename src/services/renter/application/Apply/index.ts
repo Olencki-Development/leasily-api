@@ -27,7 +27,9 @@ export default class ApplicationApply {
       applicant.application as IApplication
     )
     if (isComplete) {
-      await this._requestBackgroundCheck(applicant.application as IApplication)
+      const application = applicant.application as IApplication
+      application.stage = APPLICATION_STAGES.AWAITING_APPLICATION_REVIEW
+      await application.save()
     }
   }
 
@@ -45,14 +47,5 @@ export default class ApplicationApply {
     })
 
     return !isIncomplete
-  }
-
-  private async _requestBackgroundCheck(
-    application: IApplication
-  ): Promise<void> {
-    application.stage = APPLICATION_STAGES.REQUESTING_BACKGROUND_CHECK
-    await application.save()
-
-    // TODO: implement background check
   }
 }

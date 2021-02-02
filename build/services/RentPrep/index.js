@@ -7,10 +7,7 @@ class RentPrep {
         this._axios = axios;
     }
     async fetchBackgroundcheck(form) {
-        const response = await this._request({
-            ...form,
-            RequestParameters: this._config.RequestParameters
-        });
+        const response = await this._request(form);
         if (response.status >= 400) {
             throw new RentPrepError_1.default(response);
         }

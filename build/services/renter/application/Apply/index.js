@@ -18,7 +18,9 @@ class ApplicationApply {
         await applicant.save();
         const isComplete = await this._isApplicationComplete(applicant.application);
         if (isComplete) {
-            await this._requestBackgroundCheck(applicant.application);
+            const application = applicant.application;
+            application.stage = Application_1.APPLICATION_STAGES.AWAITING_APPLICATION_REVIEW;
+            await application.save();
         }
     }
     async _isApplicationComplete(application) {
@@ -30,11 +32,6 @@ class ApplicationApply {
             return !applicant.history;
         });
         return !isIncomplete;
-    }
-    async _requestBackgroundCheck(application) {
-        application.stage = Application_1.APPLICATION_STAGES.REQUESTING_BACKGROUND_CHECK;
-        await application.save();
-        // TODO: implement background check
     }
 }
 exports.default = ApplicationApply;
