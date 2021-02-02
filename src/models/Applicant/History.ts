@@ -2,7 +2,7 @@ import { Schema } from 'mongoose'
 import { PetSchema, IPet } from './Pet'
 import { LeasilyDocument } from '../plugins'
 
-type TimeInterval = 'Full Time' | 'Part Time' | 'Student' | 'Umemployed'
+export type TimeInterval = 'Full Time' | 'Part Time' | 'Student' | 'Umemployed'
 
 export interface IHistory extends LeasilyDocument {
   ssn: string
