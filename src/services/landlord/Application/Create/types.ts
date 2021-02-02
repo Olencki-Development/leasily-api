@@ -1,5 +1,7 @@
 import { IApplicant } from '../../../../models/Applicant'
 import { IApplication } from '../../../../models/Application'
+import { IUser } from '../../../../models/User'
+import { ILandlord } from '../../../../models/Landlord'
 
 export type CreateForm = {
   property: {
@@ -23,6 +25,7 @@ export type CreateForm = {
     startDate: Date
   }
   applicants: ApplicantForm[]
+  user: IUser
 }
 
 export type ApplicantForm = {
@@ -34,4 +37,5 @@ export type ApplicantForm = {
 export type CreateReturnType = {
   applicants: IApplicant[]
   application: IApplication
+  landlord: ILandlord
 }

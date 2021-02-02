@@ -11,7 +11,8 @@ class ApplicationCreate {
         this._baseUrl = baseUrl;
     }
     async create(form) {
-        const Application = container_1.default.make('models').Application;
+        const Application = container_1.default.make('models')
+            .Application;
         const application = await Application.create({
             property: form.property,
             lease: form.lease
@@ -21,9 +22,11 @@ class ApplicationCreate {
             const applicant = await this._getApplicant(applicantForm, application);
             applicants.push(applicant);
         }
+        const landlord = await this._getLandlord(application, form.user);
         return {
             application,
-            applicants
+            applicants,
+            landlord
         };
     }
     async _getApplicant(applicantForm, application) {
@@ -38,6 +41,13 @@ class ApplicationCreate {
         });
         await this._sendApplyEmail(application, applicant);
         return applicant;
+    }
+    async _getLandlord(application, user) {
+        const Landlord = container_1.default.make('models').Landlord;
+        return Landlord.create({
+            user,
+            application
+        });
     }
     async _sendApplyEmail(application, applicant) {
         await this._email.send({

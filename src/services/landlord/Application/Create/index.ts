@@ -3,6 +3,7 @@ import container from '../../../../container'
 import { IApplication, IApplicationModel } from '../../../../models/Application'
 import { IApplicant, IApplicantModel } from '../../../../models/Applicant'
 import { IUser, IUserModel } from '../../../../models/User'
+import { ILandlord, ILandlordModel } from '../../../../models/Landlord'
 import Email from '../../../Email'
 
 export default class ApplicationCreate {
@@ -33,9 +34,12 @@ export default class ApplicationCreate {
       applicants.push(applicant)
     }
 
+    const landlord = await this._getLandlord(application, form.user)
+
     return {
       application,
-      applicants
+      applicants,
+      landlord
     }
   }
 
@@ -61,6 +65,18 @@ export default class ApplicationCreate {
     await this._sendApplyEmail(application, applicant)
 
     return applicant
+  }
+
+  private async _getLandlord(
+    application: IApplication,
+    user: IUser
+  ): Promise<ILandlord> {
+    const Landlord = container.make('models').Landlord as ILandlordModel
+
+    return Landlord.create({
+      user,
+      application
+    })
   }
 
   private async _sendApplyEmail(
