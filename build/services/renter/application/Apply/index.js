@@ -25,8 +25,7 @@ class ApplicationApply {
         const Applicant = container_1.default.make('models').Applicant;
         const applicants = await Applicant.find({
             application
-        })
-            .exec();
+        }).exec();
         const isIncomplete = applicants.find((applicant) => {
             return !applicant.history;
         });
