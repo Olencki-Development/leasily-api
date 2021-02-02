@@ -1,6 +1,8 @@
 import { CreditCardType } from '../../RentPrep/types'
+import { IUser } from '../../../models/User'
 
 export type RequestForm = {
+  user: IUser
   applicationId: string
   customer: {
     creditCard: {

@@ -9,13 +9,17 @@ class ApplicationDecision {
         this._email = container_1.default.make('email');
     }
     async approve(form) {
-        const Application = container_1.default.make('models').Application;
-        const application = await Application.findOne({
-            id: form.applicationId
-        });
-        if (!application) {
+        const Landlord = container_1.default.make('models').Landlord;
+        const landlord = await Landlord.findOne({
+            user: form.user,
+            application: form.applicationId
+        })
+            .populate('application')
+            .exec();
+        if (!landlord) {
             throw new NotFoundError_1.default();
         }
+        const application = landlord.application;
         if (this._hasDecisionBeenMade(application)) {
             throw new ApplicationResolvedError_1.default();
         }
@@ -27,13 +31,17 @@ class ApplicationDecision {
         return application.save();
     }
     async decline(form) {
-        const Application = container_1.default.make('models').Application;
-        const application = await Application.findOne({
-            id: form.applicationId
-        });
-        if (!application) {
+        const Landlord = container_1.default.make('models').Landlord;
+        const landlord = await Landlord.findOne({
+            user: form.user,
+            application: form.applicationId
+        })
+            .populate('application')
+            .exec();
+        if (!landlord) {
             throw new NotFoundError_1.default();
         }
+        const application = landlord.application;
         if (this._hasDecisionBeenMade(application)) {
             throw new ApplicationResolvedError_1.default();
         }

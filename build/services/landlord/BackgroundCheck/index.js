@@ -6,13 +6,17 @@ const ApplicationPendingError_1 = require("../../../errors/ApplicationPendingErr
 const NotFoundError_1 = require("../../../errors/NotFoundError");
 class BackgroundCheck {
     async request(form) {
-        const Application = container_1.default.make('models').Application;
-        const application = await Application.findOne({
-            id: form.applicationId
-        });
-        if (!application) {
+        const Landlord = container_1.default.make('models').Landlord;
+        const landlord = await Landlord.findOne({
+            user: form.user,
+            application: form.applicationId
+        })
+            .populate('application')
+            .exec();
+        if (!landlord) {
             throw new NotFoundError_1.default();
         }
+        const application = landlord.application;
         if (application.stage !== Application_1.APPLICATION_STAGES.AWAITING_APPLICATION_REVIEW) {
             throw new ApplicationPendingError_1.default();
         }
@@ -34,10 +38,10 @@ class BackgroundCheck {
                     billingCity: form.customer.billingAddress.city,
                     billingState: form.customer.billingAddress.state,
                     billingZip: form.customer.billingAddress.zipcode,
-                    emailAddress: '',
-                    firstName: '',
-                    lastName: '',
-                    referenceId: ''
+                    emailAddress: form.user.email,
+                    firstName: form.user.fullName.split(' ')[0],
+                    lastName: form.user.fullName.split(' ')[1],
+                    referenceId: landlord.id
                 },
                 Applicant: {
                     dateOfBirth: applicant.history.dob,

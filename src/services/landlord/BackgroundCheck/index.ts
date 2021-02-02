@@ -1,26 +1,27 @@
 import { RequestForm } from './types'
 import container from '../../../container'
 import { IUser } from '../../../models/User'
+import { ILandlordModel } from '../../../models/Landlord'
 import { IApplicant, IApplicantModel } from '../../../models/Applicant'
 import RentPrep from '../../RentPrep'
-import {
-  IApplication,
-  IApplicationModel,
-  APPLICATION_STAGES
-} from '../../../models/Application'
+import { IApplication, APPLICATION_STAGES } from '../../../models/Application'
 import ApplicationPendingError from '../../../errors/ApplicationPendingError'
 import NotFoundError from '../../../errors/NotFoundError'
 
 export default class BackgroundCheck {
   async request(form: RequestForm) {
-    const Application = container.make('models')
-      .Application as IApplicationModel
-    const application = await Application.findOne({
-      id: form.applicationId
+    const Landlord = container.make('models').Landlord as ILandlordModel
+    const landlord = await Landlord.findOne({
+      user: form.user,
+      application: form.applicationId
     })
-    if (!application) {
+      .populate('application')
+      .exec()
+    if (!landlord) {
       throw new NotFoundError()
     }
+    const application = landlord.application as IApplication
+
     if (application.stage !== APPLICATION_STAGES.AWAITING_APPLICATION_REVIEW) {
       throw new ApplicationPendingError()
     }
@@ -44,10 +45,10 @@ export default class BackgroundCheck {
           billingCity: form.customer.billingAddress.city,
           billingState: form.customer.billingAddress.state,
           billingZip: form.customer.billingAddress.zipcode,
-          emailAddress: '',
-          firstName: '',
-          lastName: '',
-          referenceId: ''
+          emailAddress: form.user.email,
+          firstName: form.user.fullName.split(' ')[0],
+          lastName: form.user.fullName.split(' ')[1],
+          referenceId: landlord.id
         },
         Applicant: {
           dateOfBirth: applicant.history.dob,

@@ -12,6 +12,7 @@ export default class ApplicationApply {
     const Applicant = container.make('models').Applicant as IApplicantModel
 
     const applicant = await Applicant.findOne({
+      user: form.user,
       id: form.applicantId
     })
       .populate('application')

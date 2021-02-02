@@ -7,6 +7,7 @@ class ApplicationApply {
     async complete(form) {
         const Applicant = container_1.default.make('models').Applicant;
         const applicant = await Applicant.findOne({
+            user: form.user,
             id: form.applicantId
         })
             .populate('application')

@@ -2,10 +2,10 @@ import { ApproveForm, DeclineForm } from './types'
 import container from '../../../../container'
 import Email from '../../../Email'
 import { IUser } from '../../../../models/User'
+import { ILandlordModel } from '../../../../models/Landlord'
 import { IApplicant, IApplicantModel } from '../../../../models/Applicant'
 import {
   IApplication,
-  IApplicationModel,
   APPLICATION_STAGES
 } from '../../../../models/Application'
 import ApplicationResolvedError from '../../../../errors/ApplicationResolvedError'
@@ -15,14 +15,17 @@ export default class ApplicationDecision {
   private _email: Email = container.make<Email>('email')
 
   async approve(form: ApproveForm): Promise<IApplication> {
-    const Application = container.make('models')
-      .Application as IApplicationModel
-    const application = await Application.findOne({
-      id: form.applicationId
+    const Landlord = container.make('models').Landlord as ILandlordModel
+    const landlord = await Landlord.findOne({
+      user: form.user,
+      application: form.applicationId
     })
-    if (!application) {
+      .populate('application')
+      .exec()
+    if (!landlord) {
       throw new NotFoundError()
     }
+    const application = landlord.application as IApplication
 
     if (this._hasDecisionBeenMade(application)) {
       throw new ApplicationResolvedError()
@@ -39,14 +42,17 @@ export default class ApplicationDecision {
   }
 
   async decline(form: DeclineForm): Promise<IApplication> {
-    const Application = container.make('models')
-      .Application as IApplicationModel
-    const application = await Application.findOne({
-      id: form.applicationId
+    const Landlord = container.make('models').Landlord as ILandlordModel
+    const landlord = await Landlord.findOne({
+      user: form.user,
+      application: form.applicationId
     })
-    if (!application) {
+      .populate('application')
+      .exec()
+    if (!landlord) {
       throw new NotFoundError()
     }
+    const application = landlord.application as IApplication
 
     if (this._hasDecisionBeenMade(application)) {
       throw new ApplicationResolvedError()

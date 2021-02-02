@@ -1,6 +1,8 @@
 import { TimeInterval } from '../../../../models/Applicant/History'
+import { IUser } from '../../../../models/User'
 
 export type CompleteForm = {
+  user: IUser
   applicantId: string
   history: {
     ssn: string
