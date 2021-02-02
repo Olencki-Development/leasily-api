@@ -42,8 +42,7 @@ class ApplicationDecision {
         const Applicant = container_1.default.make('models').Applicant;
         return Applicant.find({
             application
-        })
-            .exec();
+        }).exec();
     }
     async _sendDeclinedEmail(application, applicant) {
         await this._email.send({
