@@ -1,14 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../../container");
+const Email_1 = require("../../../Email");
 class ApplicationCreate {
-    constructor() {
-        this._email = container_1.default.make('email');
-        const baseUrl = process.env.BASE_URL;
-        if (!baseUrl) {
-            throw new Error('BASE_URL is not set');
-        }
-        this._baseUrl = baseUrl;
+    constructor(_baseUrl) {
+        this._baseUrl = _baseUrl;
+        this._email = container_1.default.make(Email_1.default);
     }
     async create(form) {
         const Application = container_1.default.make('models')

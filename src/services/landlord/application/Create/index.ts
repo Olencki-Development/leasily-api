@@ -7,17 +7,9 @@ import { ILandlord, ILandlordModel } from '../../../../models/Landlord'
 import Email from '../../../Email'
 
 export default class ApplicationCreate {
-  private _email: Email = container.make<Email>('email')
-  private _baseUrl: string
+  private _email: Email = container.make<Email>(Email)
 
-  constructor() {
-    const baseUrl = process.env.BASE_URL
-    if (!baseUrl) {
-      throw new Error('BASE_URL is not set')
-    }
-
-    this._baseUrl = baseUrl
-  }
+  constructor(private _baseUrl: string) {}
 
   async create(form: CreateForm): Promise<CreateReturnType> {
     const Application = container.make('models')

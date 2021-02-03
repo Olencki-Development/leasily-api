@@ -55,6 +55,9 @@ describe('src/services/landlord/BackgroundCheck:webhookCallback', function () {
             street: '123 Main St'
           }
         }
+      },
+      user: {
+        email: 'test@email.com'
       }
     }
     const Landlord = {
