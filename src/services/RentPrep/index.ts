@@ -3,13 +3,7 @@ import { AxiosStatic } from 'axios'
 import RentPrepError from './RentPrepError'
 
 export default class RentPrep {
-  private _config: RentPrepConfig
-  private _axios: AxiosStatic
-
-  constructor(config: RentPrepConfig, axios: AxiosStatic) {
-    this._config = config
-    this._axios = axios
-  }
+  constructor(private _config: RentPrepConfig, private _axios: AxiosStatic) {}
 
   async fetchBackgroundcheck(form: BackgroundCheckForm) {
     const response = await this._request(form)

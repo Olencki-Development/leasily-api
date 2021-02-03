@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const RentPrepError_1 = require("./RentPrepError");
 class RentPrep {
-    constructor(config, axios) {
-        this._config = config;
-        this._axios = axios;
+    constructor(_config, _axios) {
+        this._config = _config;
+        this._axios = _axios;
     }
     async fetchBackgroundcheck(form) {
         const response = await this._request(form);

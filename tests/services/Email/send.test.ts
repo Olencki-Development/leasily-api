@@ -7,8 +7,6 @@ describe('src/services/Email:send', function () {
     }
     const fromEmail = 'from@email.com'
 
-    process.env.SUPPORT_EMAIL = 'test@email.com'
-
     const instance = new Email(mockClient, fromEmail)
     await instance.send({
       email: 'to@email.com',

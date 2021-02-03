@@ -7,8 +7,6 @@ describe('src/services/Email:constructor', function () {
     }
     const fromEmail = 'from@email.com'
 
-    process.env.SUPPORT_EMAIL = 'test@email.com'
-
     const instance = new Email(mockClient, fromEmail)
     this.assert.hasAllKeys(instance, ['_client', '_fromEmail'])
     this.assert.equal(instance['_fromEmail'], fromEmail)
