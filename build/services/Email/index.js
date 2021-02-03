@@ -1,16 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Email {
-    constructor(_client) {
+    constructor(_client, _fromEmail) {
         this._client = _client;
-        const email = process.env.SUPPORT_EMAIL;
-        if (!email) {
-            throw new Error('SUPPORT_EMAIL not set');
-        }
-        this._fromEmail = email;
+        this._fromEmail = _fromEmail;
     }
     async send(form) {
-        this._client;
         return this._client.send({
             to: form.email,
             from: this._fromEmail,

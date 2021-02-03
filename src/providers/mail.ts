@@ -6,7 +6,12 @@ export default function (container: ContainerInterface) {
   container.instance('@sendgrid/mail', sgMail)
 
   container.singleton(Email, function () {
+    const email = process.env.SUPPORT_EMAIL
+    if (!email) {
+      throw new Error('SUPPORT_EMAIL not set')
+    }
+
     const sgMail = container.make('@sendgrid/mail')
-    return new Email(sgMail)
+    return new Email(sgMail, email)
   })
 }
