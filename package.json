@@ -6,7 +6,8 @@
     "build": "tsc",
     "format": "prettier --write 'src/**/*.{ts,tsx,json}'",
     "start": "node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ts-node/register \"tests/setup.ts\" \"tests/**/*.test.ts\"",
+    "test:coverage": "nyc npm run test"
   },
   "husky": {
     "hooks": {
@@ -19,10 +20,18 @@
     ]
   },
   "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.22",
+    "@types/sinon": "^9.0.10",
+    "chai": "^4.2.0",
     "husky": "^4.3.8",
     "lint-staged": "^10.5.3",
-    "prettier": "^2.2.1"
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
+    "prettier": "^2.2.1",
+    "sinon": "^9.2.4",
+    "ts-node": "^9.1.1"
   },
   "dependencies": {
     "@halliganjs/service-container": "^1.1.0",

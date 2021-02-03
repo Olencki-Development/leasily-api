@@ -1,7 +1,7 @@
 import { RegisterForm, LoginForm, VerifyForm } from './types'
 import container from '../../container'
 import { IUser, IUserModel } from '../../models/User'
-import Unauthorized from '../../errors/Unauthorized'
+import UnauthorizedError from '../../errors/Unauthorized'
 import Verify from '../Verify'
 
 export default class Auth {
@@ -23,9 +23,9 @@ export default class Auth {
 
     const user = await User.findOne({
       email: form.email
-    })
+    }).exec()
     if (!user) {
-      throw new Unauthorized()
+      throw new UnauthorizedError()
     }
 
     const verify = container.make<Verify>(Verify)
@@ -41,9 +41,9 @@ export default class Auth {
 
     const user = await User.findOne({
       email: form.email
-    })
+    }).exec()
     if (!user) {
-      throw new Unauthorized()
+      throw new UnauthorizedError()
     }
 
     const verify = container.make<Verify>(Verify)

@@ -17,7 +17,8 @@ class Auth {
         const User = container_1.default.make('models').User;
         const user = await User.findOne({
             email: form.email
-        });
+        })
+            .exec();
         if (!user) {
             throw new Unauthorized_1.default();
         }
@@ -31,7 +32,8 @@ class Auth {
         const User = container_1.default.make('models').User;
         const user = await User.findOne({
             email: form.email
-        });
+        })
+            .exec();
         if (!user) {
             throw new Unauthorized_1.default();
         }
