@@ -11,7 +11,7 @@ import Email from '../../Email'
 import { FileAttachment } from '../../Email/types'
 
 export default class BackgroundCheck {
-  private _email: Email = container.make<Email>('email')
+  private _email: Email = container.make<Email>(Email)
 
   async request(form: RequestForm) {
     const Landlord = container.make('models').Landlord as ILandlordModel
@@ -32,7 +32,7 @@ export default class BackgroundCheck {
 
     const applicants = await this._getApplicants(application)
 
-    const rentprep = container.make<RentPrep>('rentprep')
+    const rentprep = container.make<RentPrep>(RentPrep)
     for (const applicant of applicants) {
       await rentprep.fetchBackgroundcheck({
         PackageName: 'Platinum',

@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../container");
+const RentPrep_1 = require("../../RentPrep");
 const Application_1 = require("../../../models/Application");
 const ApplicationPendingError_1 = require("../../../errors/ApplicationPendingError");
 const NotFoundError_1 = require("../../../errors/NotFoundError");
+const Email_1 = require("../../Email");
 class BackgroundCheck {
     constructor() {
-        this._email = container_1.default.make('email');
+        this._email = container_1.default.make(Email_1.default);
     }
     async request(form) {
         const Landlord = container_1.default.make('models').Landlord;
@@ -24,7 +26,7 @@ class BackgroundCheck {
             throw new ApplicationPendingError_1.default();
         }
         const applicants = await this._getApplicants(application);
-        const rentprep = container_1.default.make('rentprep');
+        const rentprep = container_1.default.make(RentPrep_1.default);
         for (const applicant of applicants) {
             await rentprep.fetchBackgroundcheck({
                 PackageName: 'Platinum',

@@ -5,7 +5,7 @@ import axios from 'axios'
 export default function (container: ContainerInterface) {
   container.instance('axios', axios)
 
-  container.singleton('rentprep', function () {
+  container.singleton(RentPrep, function () {
     const isProd = process.env.RENT_PREP_IS_PROD
     const apiKey = process.env.RENT_PREP_API_KEY
     if (!apiKey) {
