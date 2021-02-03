@@ -3,14 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../../container");
 const Application_1 = require("../../../../models/Application");
 const NotFoundError_1 = require("../../../../errors/NotFoundError");
+const Email_1 = require("../../../Email");
 class ApplicationApply {
-    constructor() {
-        this._email = container_1.default.make('email');
-        const baseUrl = process.env.BASE_URL;
-        if (!baseUrl) {
-            throw new Error('BASE_URL is not set');
-        }
-        this._baseUrl = baseUrl;
+    constructor(_baseUrl) {
+        this._baseUrl = _baseUrl;
+        this._email = container_1.default.make(Email_1.default);
     }
     async complete(form) {
         const Applicant = container_1.default.make('models').Applicant;
@@ -53,7 +50,7 @@ class ApplicationApply {
         }
         await this._email.send({
             email: landlord.user.email,
-            subject: `Update on Application for ${landlord.application.property.address.street}`,
+            subject: `Update on Application for ${application.property.address.street}`,
             body: `
         All applicants have completed their application.
         View the completed application or request a background check at ${this._baseUrl}.

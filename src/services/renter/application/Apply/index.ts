@@ -11,17 +11,9 @@ import NotFoundError from '../../../../errors/NotFoundError'
 import Email from '../../../Email'
 
 export default class ApplicationApply {
-  private _email: Email = container.make<Email>('email')
-  private _baseUrl: string
+  private _email: Email = container.make<Email>(Email)
 
-  constructor() {
-    const baseUrl = process.env.BASE_URL
-    if (!baseUrl) {
-      throw new Error('BASE_URL is not set')
-    }
-
-    this._baseUrl = baseUrl
-  }
+  constructor(private _baseUrl: string) {}
 
   async complete(form: CompleteForm): Promise<void> {
     const Applicant = container.make('models').Applicant as IApplicantModel
@@ -78,9 +70,7 @@ export default class ApplicationApply {
 
     await this._email.send({
       email: (landlord.user as IUser).email,
-      subject: `Update on Application for ${
-        (landlord.application as IApplication).property.address.street
-      }`,
+      subject: `Update on Application for ${application.property.address.street}`,
       body: `
         All applicants have completed their application.
         View the completed application or request a background check at ${this._baseUrl}.
