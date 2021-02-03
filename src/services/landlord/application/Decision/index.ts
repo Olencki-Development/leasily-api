@@ -12,7 +12,7 @@ import ApplicationResolvedError from '../../../../errors/ApplicationResolvedErro
 import NotFoundError from '../../../../errors/NotFoundError'
 
 export default class ApplicationDecision {
-  private _email: Email = container.make<Email>('email')
+  private _email: Email = container.make<Email>(Email)
 
   async approve(form: ApproveForm): Promise<IApplication> {
     const Landlord = container.make('models').Landlord as ILandlordModel

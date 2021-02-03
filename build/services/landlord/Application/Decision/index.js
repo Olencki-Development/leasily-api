@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../../container");
+const Email_1 = require("../../../Email");
 const Application_1 = require("../../../../models/Application");
 const ApplicationResolvedError_1 = require("../../../../errors/ApplicationResolvedError");
 const NotFoundError_1 = require("../../../../errors/NotFoundError");
 class ApplicationDecision {
     constructor() {
-        this._email = container_1.default.make('email');
+        this._email = container_1.default.make(Email_1.default);
     }
     async approve(form) {
         const Landlord = container_1.default.make('models').Landlord;
