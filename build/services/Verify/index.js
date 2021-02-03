@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Unauthorized_1 = require("../../errors/Unauthorized");
 const container_1 = require("../../container");
-const TEN_MINUTES_IN_MS = 600000;
+const Email_1 = require("../Email");
 class Verify {
     constructor() {
         this._codes = {};
-        this._email = container_1.default.make('email');
+        this._email = container_1.default.make(Email_1.default);
     }
     async requestEmail(form) {
         const code = this._getCode();
@@ -44,7 +44,7 @@ class Verify {
         }
         const now = new Date();
         const diffInMS = now.getTime() - payload.dateTime.getTime();
-        if (diffInMS > TEN_MINUTES_IN_MS) {
+        if (diffInMS > Verify.TEN_MINUTES_IN_MS) {
             throw new Unauthorized_1.default();
         }
         return payload;
@@ -63,4 +63,5 @@ class Verify {
     }
 }
 exports.default = Verify;
+Verify.TEN_MINUTES_IN_MS = 600000;
 //# sourceMappingURL=index.js.map

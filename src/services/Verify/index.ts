@@ -4,15 +4,14 @@ import {
   VerificationMatch,
   VerificationPayload
 } from './types'
-import Unauthorized from '../../errors/Unauthorized'
+import UnauthorizedError from '../../errors/Unauthorized'
 import container from '../../container'
 import Email from '../Email'
 
-const TEN_MINUTES_IN_MS = 600000
-
 export default class Verify {
+  private static TEN_MINUTES_IN_MS = 600000
   private _codes: VerificationMatch = {}
-  private _email: Email = container.make<Email>('email')
+  private _email: Email = container.make<Email>(Email)
 
   async requestEmail(form: RequestEmailForm) {
     const code = this._getCode()
@@ -54,17 +53,17 @@ export default class Verify {
   ): VerificationPayload {
     const payload = this._codes[id]
     if (!payload) {
-      throw new Unauthorized()
+      throw new UnauthorizedError()
     }
 
     if (code !== payload.code) {
-      throw new Unauthorized()
+      throw new UnauthorizedError()
     }
 
     const now = new Date()
     const diffInMS = now.getTime() - payload.dateTime.getTime()
-    if (diffInMS > TEN_MINUTES_IN_MS) {
-      throw new Unauthorized()
+    if (diffInMS > Verify.TEN_MINUTES_IN_MS) {
+      throw new UnauthorizedError()
     }
 
     return payload
