@@ -5,7 +5,20 @@ const apollo_server_express_1 = require("apollo-server-express");
 const express = require("express");
 const resolvers_1 = require("./resolvers");
 const typeDefs_1 = require("./typeDefs");
-const server = new apollo_server_express_1.ApolloServer({ typeDefs: typeDefs_1.default, resolvers: resolvers_1.default });
+const container_1 = require("../container");
+const server = new apollo_server_express_1.ApolloServer({
+    typeDefs: typeDefs_1.default,
+    resolvers: resolvers_1.default,
+    context: async ({ req }) => {
+        const token = req.headers.authorization || '';
+        const User = container_1.default.make('models').User;
+        const user = await User.findOne().exec();
+        if (!user) {
+            throw new Error('whoops');
+        }
+        return { user };
+    }
+});
 exports.server = server;
 const app = express();
 exports.app = app;

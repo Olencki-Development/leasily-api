@@ -7,6 +7,7 @@ const rentprep_1 = require("./providers/rentprep");
 const verify_1 = require("./providers/verify");
 const auth_1 = require("./providers/auth");
 const db_1 = require("./providers/db");
+const landlord_1 = require("./providers/landlord");
 const container = new service_container_1.Container();
 container
     .provider(models_1.default)
@@ -14,6 +15,7 @@ container
     .provider(rentprep_1.default)
     .provider(verify_1.default)
     .provider(auth_1.default)
-    .provider(db_1.default);
+    .provider(db_1.default)
+    .provider(landlord_1.default);
 exports.default = container;
 //# sourceMappingURL=container.js.map
