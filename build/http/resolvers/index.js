@@ -1,17 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const register_1 = require("./mutations/auth/register");
 exports.default = {
-    Query: {
-        authRegister: () => {
-            return {
-                id: 'my-id',
-                fullName: 'Test User',
-                email: 'test@email.com',
-                phone: '(555) 555-5555',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-            };
-        }
+    Query: {},
+    Mutation: {
+        register: register_1.default
     }
 };
 //# sourceMappingURL=index.js.map

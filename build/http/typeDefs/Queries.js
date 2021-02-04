@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = `
 type Query {
-  authRegister: User!
+  applications: [Application]!
 }
 `;
 //# sourceMappingURL=Queries.js.map

@@ -9,6 +9,7 @@ const Pet_1 = require("./Pet");
 const Property_1 = require("./Property");
 const User_1 = require("./User");
 const Queries_1 = require("./Queries");
+const Mutations_1 = require("./Mutations");
 exports.default = `
 ${Address_1.default}
 ${Applicant_1.default}
@@ -20,5 +21,6 @@ ${Property_1.default}
 ${User_1.default}
 
 ${Queries_1.default}
+${Mutations_1.default}
 `;
 //# sourceMappingURL=index.js.map

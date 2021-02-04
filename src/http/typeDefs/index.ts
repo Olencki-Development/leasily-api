@@ -8,6 +8,7 @@ import Property from './Property'
 import User from './User'
 
 import Queries from './Queries'
+import Mutations from './Mutations'
 
 export default `
 ${Address}
@@ -20,4 +21,5 @@ ${Property}
 ${User}
 
 ${Queries}
+${Mutations}
 `
