@@ -21,7 +21,7 @@ class Database {
             Mongoose.connect(self.uri, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
-                useCreateIndex: true,
+                useCreateIndex: true
             });
             self.database = Mongoose.connection;
             self.database.once('open', async () => {
