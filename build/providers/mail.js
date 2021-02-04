@@ -9,8 +9,8 @@ function default_1(container) {
         if (!email) {
             throw new Error('SUPPORT_EMAIL not set');
         }
-        const sgMail = container.make('@sendgrid/mail');
-        return new Email_1.default(sgMail, email);
+        const mail = container.make('@sendgrid/mail');
+        return new Email_1.default(mail, email);
     });
 }
 exports.default = default_1;

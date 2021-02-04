@@ -7,8 +7,19 @@ input RegisterForm {
   phone: String!
 }
 
+input LoginForm {
+  email: String!
+}
+
+input VerifyForm {
+  email: String!
+  code: String!
+}
+
 type Mutation {
   register(form: RegisterForm!): User!
+  login(form: LoginForm!): User!
+  verify(form: VerifyForm!): User!
 }
 `;
 //# sourceMappingURL=Mutations.js.map

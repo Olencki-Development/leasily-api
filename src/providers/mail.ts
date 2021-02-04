@@ -11,7 +11,7 @@ export default function (container: ContainerInterface) {
       throw new Error('SUPPORT_EMAIL not set')
     }
 
-    const sgMail = container.make('@sendgrid/mail')
-    return new Email(sgMail, email)
+    const mail = container.make<typeof sgMail>('@sendgrid/mail')
+    return new Email(mail, email)
   })
 }
