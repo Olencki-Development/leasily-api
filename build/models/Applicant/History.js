@@ -171,7 +171,9 @@ exports.HistorySchema = new mongoose_1.Schema({
             },
             interval: {
                 type: String,
-                enum: ['Full Time', 'Part Time', 'Student', 'Umemployed'],
+                enum: [
+                    'weekly', 'bi-weekly', 'monthly', 'yearly'
+                ],
                 default: null
             }
         },
@@ -182,7 +184,9 @@ exports.HistorySchema = new mongoose_1.Schema({
             },
             interval: {
                 type: String,
-                enum: ['Full Time', 'Part Time', 'Student', 'Umemployed'],
+                enum: [
+                    'weekly', 'bi-weekly', 'monthly', 'yearly'
+                ],
                 default: null
             }
         }

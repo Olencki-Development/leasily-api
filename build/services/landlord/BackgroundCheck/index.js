@@ -35,7 +35,9 @@ class BackgroundCheck {
                         cardType: form.customer.creditCard.type,
                         cardNumber: form.customer.creditCard.number,
                         cardSecurity: form.customer.creditCard.security,
-                        expireMonth: form.customer.creditCard.expiration.month < 10 ? `0${form.customer.creditCard.expiration.month}` : form.customer.creditCard.expiration.month.toString(),
+                        expireMonth: form.customer.creditCard.expiration.month < 10
+                            ? `0${form.customer.creditCard.expiration.month}`
+                            : form.customer.creditCard.expiration.month.toString(),
                         expireYear: form.customer.creditCard.expiration.year.toString()
                     },
                     IPAddress: form.customer.ipAddress,

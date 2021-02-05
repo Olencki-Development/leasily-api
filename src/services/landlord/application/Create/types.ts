@@ -16,7 +16,6 @@ export type CreateForm = {
   lease: {
     securityDeposit: {
       amount: number
-      hasBeenCollected: boolean
     }
     rent: {
       amount: number

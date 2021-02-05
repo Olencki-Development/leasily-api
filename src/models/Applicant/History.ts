@@ -2,7 +2,12 @@ import { Schema } from 'mongoose'
 import { PetSchema, IPet } from './Pet'
 import { LeasilyDocument } from '../plugins'
 
-export type TimeInterval = 'Full Time' | 'Part Time' | 'Student' | 'Umemployed'
+export type EmploymentInterval =
+  | 'Full Time'
+  | 'Part Time'
+  | 'Student'
+  | 'Umemployed'
+export type TimeInterval = 'weekly' | 'bi-weekly' | 'monthly' | 'yearly'
 
 export interface IHistory extends LeasilyDocument {
   ssn: string
@@ -51,7 +56,7 @@ export interface IHistory extends LeasilyDocument {
     reasonForRefusalOfRent: string | null
   }
   employment: {
-    status: 'Full Time' | 'Part Time' | 'Student' | 'Umemployed'
+    status: EmploymentInterval
     employer: string | null
     start: Date | null
     position: string | null
@@ -239,7 +244,7 @@ export const HistorySchema = new Schema<IHistory>(
         },
         interval: {
           type: String,
-          enum: ['Full Time', 'Part Time', 'Student', 'Umemployed'],
+          enum: ['weekly', 'bi-weekly', 'monthly', 'yearly'],
           default: null
         }
       },
@@ -250,7 +255,7 @@ export const HistorySchema = new Schema<IHistory>(
         },
         interval: {
           type: String,
-          enum: ['Full Time', 'Part Time', 'Student', 'Umemployed'],
+          enum: ['weekly', 'bi-weekly', 'monthly', 'yearly'],
           default: null
         }
       }

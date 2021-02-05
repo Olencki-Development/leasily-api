@@ -57,14 +57,7 @@ export default class BackgroundCheckTransformer
                 .required()
             })
             .required(),
-          billingAddress: validator
-            .object({
-              street: validator.string().trim().required(),
-              city: validator.string().trim().required(),
-              state: validator.string().trim().length(2).required(),
-              zipcode: validator.string().trim().length(5).required()
-            })
-            .required(),
+          billingAddress: validator.address.required(),
           ipAddress: validator
             .string()
             .ip({

@@ -1,4 +1,7 @@
-import { TimeInterval } from '../../../../models/Applicant/History'
+import {
+  TimeInterval,
+  EmploymentInterval
+} from '../../../../models/Applicant/History'
 import { IUser } from '../../../../models/User'
 
 export type CompleteForm = {
@@ -55,7 +58,7 @@ export type CompleteForm = {
       reasonForRefusalOfRent: string | null
     }
     employment: {
-      status: 'Full Time' | 'Part Time' | 'Student' | 'Umemployed'
+      status: EmploymentInterval
       employer: string | null
       start: Date | null
       position: string | null
