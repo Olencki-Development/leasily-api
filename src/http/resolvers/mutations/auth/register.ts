@@ -2,12 +2,10 @@ import container from '../../../../container'
 import Auth from '../../../../services/Auth'
 import { RegisterForm } from '../../../../services/Auth/types'
 import * as Joi from 'joi'
-import { phone } from '../../../../services/validation'
 
 const schema = Joi.object({
   fullName: Joi.string().trim().required(),
-  email: Joi.string().email().trim().required(),
-  phone: phone.required()
+  email: Joi.string().email().trim().required()
 })
 
 export default async function register(_: any, args: { form: RegisterForm }) {

@@ -3,11 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../../container");
 const Auth_1 = require("../../../../services/Auth");
 const Joi = require("joi");
-const validation_1 = require("../../../../services/validation");
 const schema = Joi.object({
     fullName: Joi.string().trim().required(),
-    email: Joi.string().email().trim().required(),
-    phone: validation_1.phone.required()
+    email: Joi.string().email().trim().required()
 });
 async function register(_, args) {
     const result = schema.validate(args.form);
