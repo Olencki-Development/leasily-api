@@ -6,7 +6,11 @@ class RegisterTransformer {
         const schema = validation_1.default.object({
             fullName: validation_1.default.string().trim().required(),
             email: validation_1.default.string().email().trim().required(),
-            phone: validation_1.default.string().trim().phoneNumber({ defaultCountry: 'US', format: 'national' }).required()
+            phone: validation_1.default
+                .string()
+                .trim()
+                .phoneNumber({ defaultCountry: 'US', format: 'national' })
+                .required()
         });
         const result = schema.validate(payload);
         if (result.error) {

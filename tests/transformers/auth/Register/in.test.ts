@@ -1,6 +1,6 @@
 import Register from '../../../../src/transformers/auth/Register'
 
-describe('src/services/RentPrep:in', function () {
+describe('src/transformers/auth/Register:in', function () {
   it('should resolve', async function () {
     const payload = {
       fullName: 'User Test',
