@@ -116,6 +116,7 @@ describe('src/services/landlord/BackgroundCheck:request', function () {
     const applicant = {
       id: 'my-applicant',
       history: {
+        dob: new Date(),
         residences: {
           current: {
             address: {},

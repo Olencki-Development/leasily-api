@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const validation_1 = require("../../services/validation");
-class LoginTransformer {
+class VerifyTransformer {
     in(payload) {
         const schema = validation_1.default.object({
             email: validation_1.default.string().email().trim().required(),
@@ -26,5 +26,5 @@ class LoginTransformer {
         };
     }
 }
-exports.default = LoginTransformer;
+exports.default = VerifyTransformer;
 //# sourceMappingURL=Verify.js.map

@@ -61,7 +61,7 @@ export type BackgroundCheckForm = {
   PackageName: AvailablePackages
   Customer: Customer
   Applicant: {
-    dateOfBirth: Date
+    dateOfBirth: string // yyyy-mm-dd
     emailAddress?: string
     fax?: string
     firstName: string
@@ -69,7 +69,7 @@ export type BackgroundCheckForm = {
     middleName?: string
     phone: string
     postalCode: string
-    ssn: string
+    ssn: string // 121-72-1111
     state: string
     streetAddress: string
     city: string

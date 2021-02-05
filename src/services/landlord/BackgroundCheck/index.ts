@@ -41,8 +41,11 @@ export default class BackgroundCheck {
             cardType: form.customer.creditCard.type,
             cardNumber: form.customer.creditCard.number,
             cardSecurity: form.customer.creditCard.security,
-            expireMonth: form.customer.creditCard.expiration.month,
-            expireYear: form.customer.creditCard.expiration.year
+            expireMonth:
+              form.customer.creditCard.expiration.month < 10
+                ? `0${form.customer.creditCard.expiration.month}`
+                : form.customer.creditCard.expiration.month.toString(),
+            expireYear: form.customer.creditCard.expiration.year.toString()
           },
           IPAddress: form.customer.ipAddress,
           billingStreetAddress: form.customer.billingAddress.street,
@@ -55,7 +58,9 @@ export default class BackgroundCheck {
           referenceId: landlord.id
         },
         Applicant: {
-          dateOfBirth: applicant.history.dob,
+          dateOfBirth: `${applicant.history.dob.getFullYear()}-${
+            applicant.history.dob.getMonth() + 1
+          }-${applicant.history.dob.getDate()}`,
           emailAddress: (applicant.user as IUser).email,
           firstName: (applicant.user as IUser).fullName.split(' ')[0],
           lastName: (applicant.user as IUser).fullName.split(' ')[1],

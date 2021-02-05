@@ -10,8 +10,8 @@ export type RequestForm = {
       security: string
       type: CreditCardType
       expiration: {
-        month: string
-        year: string
+        month: number
+        year: number
       }
     }
     billingAddress: {

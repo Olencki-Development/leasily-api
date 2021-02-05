@@ -15,7 +15,7 @@ type Json = {
   user: UserJson
 }
 
-export default class LoginTransformer
+export default class VerifyTransformer
   implements ITransformer<Payload, Entities, Json> {
   in(payload: Payload): Payload {
     const schema = validator.object({
