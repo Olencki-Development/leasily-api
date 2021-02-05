@@ -3,3 +3,16 @@ export interface ITransformer<Payload, Entities, Json> {
 
   out(entities: Entities): Json
 }
+
+type ModelJson = {
+  id: string
+
+  createdAt: string
+  updatedAt: string
+}
+
+export type UserJson = ModelJson & {
+  fullName: string
+  email: string
+  phone: string
+}
