@@ -1,14 +1,13 @@
-import Verify from '../../../../src/transformers/auth/Verify'
+import { verify } from '../../../../src/services/Auth/validate'
 
-describe('src/transformers/auth/Verify:in', function () {
+describe('src/services/Auth/validate:verify', function () {
   it('should resolve', async function () {
     const payload = {
       email: 'test@email.com',
       code: '123456'
     }
 
-    const instance = new Verify()
-    const result = instance.in(payload)
+    const result = verify(payload)
     this.assert.deepEqual(result, {
       email: 'test@email.com',
       code: '123456'
@@ -21,9 +20,8 @@ describe('src/transformers/auth/Verify:in', function () {
       code: '123456'
     }
 
-    const instance = new Verify()
     this.assert.throws(() => {
-      instance.in(payload)
+      verify(payload)
     }, '"email" must be a valid email')
   })
 
@@ -33,9 +31,8 @@ describe('src/transformers/auth/Verify:in', function () {
       code: 'invalid'
     }
 
-    const instance = new Verify()
     this.assert.throws(() => {
-      instance.in(payload)
+      verify(payload)
     }, '"code" length must be 6 characters long')
   })
 })

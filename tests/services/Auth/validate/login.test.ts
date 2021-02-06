@@ -1,13 +1,12 @@
-import Login from '../../../../src/transformers/auth/Login'
+import { login } from '../../../../src/services/Auth/validate'
 
-describe('src/transformers/auth/Login:in', function () {
+describe('src/services/Auth/validate:login', function () {
   it('should resolve', async function () {
     const payload = {
       email: 'test@email.com'
     }
 
-    const instance = new Login()
-    const result = instance.in(payload)
+    const result = login(payload)
     this.assert.deepEqual(result, {
       email: 'test@email.com'
     })
@@ -18,9 +17,8 @@ describe('src/transformers/auth/Login:in', function () {
       email: 'invalid'
     }
 
-    const instance = new Login()
     this.assert.throws(() => {
-      instance.in(payload)
+      login(payload)
     }, '"email" must be a valid email')
   })
 })

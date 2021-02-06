@@ -12,4 +12,13 @@ const address = customJoi.object({
 
 customJoi.address = address
 
-export default customJoi
+export const validator = customJoi
+
+export default function validate<T>(schema: Joi.AnySchema, payload: T): T {
+  const result = schema.validate(payload)
+  if (result.error) {
+    throw result.error
+  }
+
+  return result.value
+}

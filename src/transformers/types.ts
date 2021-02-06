@@ -1,12 +1,6 @@
 import { APPLICATION_STAGES } from '../models/Application'
 import { TimeInterval, EmploymentInterval } from '../models/Applicant/History'
 
-export interface ITransformer<Payload, Entities, Json> {
-  in(payload: Payload): Payload
-
-  out(entities: Entities): Json
-}
-
 type ModelJson = {
   id: string
 

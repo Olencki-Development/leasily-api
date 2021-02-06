@@ -1,40 +1,9 @@
-import { ITransformer } from '../types'
-import validator from '../../services/validation'
-import { CreditCardType } from '../../services/RentPrep/types'
-import { IApplication } from '../../models/Application'
+import { RequestForm } from './types'
+import validate, { validator } from '../../validation'
 
-type Payload = {
-  applicationId: string
-  customer: {
-    creditCard: {
-      number: string
-      security: string
-      type: CreditCardType
-      expiration: {
-        month: number
-        year: number
-      }
-    }
-    billingAddress: {
-      street: string
-      city: string
-      state: string
-      zipcode: string
-    }
-    ipAddress: string
-  }
-}
-
-type Entities = {
-  application: IApplication
-}
-
-type Json = {}
-
-export default class BackgroundCheckTransformer
-  implements ITransformer<Payload, Entities, Json> {
-  in(payload: Payload): Payload {
-    const schema = validator.object({
+export function request(form: Omit<RequestForm, 'user'>) {
+  const values = validate(
+    validator.object({
       applicationId: validator.string().trim().token().required(),
       customer: validator
         .object({
@@ -66,17 +35,8 @@ export default class BackgroundCheckTransformer
             .required()
         })
         .required()
-    })
-
-    const result = schema.validate(payload)
-    if (result.error) {
-      throw result.error
-    }
-
-    return result.value
-  }
-
-  out(): Json {
-    return {}
-  }
+    }),
+    form
+  )
+  return values
 }

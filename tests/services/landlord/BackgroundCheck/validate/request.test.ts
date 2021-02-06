@@ -1,7 +1,7 @@
-import BackgroundCheck from '../../../../src/transformers/landlord/BackgroundCheck'
-import { CreditCardType } from '../../../../src/services/RentPrep/types'
+import { request } from '../../../../../src/services/landlord/BackgroundCheck/validate'
+import { CreditCardType } from '../../../../../src/services/RentPrep/types'
 
-describe('src/transformers/landlord/BackgroundCheck:in', function () {
+describe('src/services/landlord/BackgroundCheck/validate:request', function () {
   it('should resolve', async function () {
     const payload = {
       applicationId: 'identifier',
@@ -25,8 +25,7 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
-    const result = instance.in(payload)
+    const result = request(payload)
     this.assert.deepEqual(result, {
       applicationId: 'identifier',
       customer: {
@@ -73,9 +72,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.creditCard.number" must be a credit card')
   })
 
@@ -102,9 +100,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.creditCard.security" length must be less than or equal to 4 characters long')
   })
 
@@ -131,9 +128,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.creditCard.type" must be one of [visa, amex, mastercard, discover]')
   })
 
@@ -160,9 +156,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.creditCard.expiration.month" must be a positive number')
   })
 
@@ -189,9 +184,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.creditCard.expiration.year" must be greater than or equal to 2021')
   })
 
@@ -218,9 +212,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.billingAddress.zipcode" length must be 5 characters long')
   })
 
@@ -247,9 +240,8 @@ describe('src/transformers/landlord/BackgroundCheck:in', function () {
       }
     }
 
-    const instance = new BackgroundCheck()
     this.assert.throws(() => {
-      instance.in(payload)
+      request(payload)
     }, '"customer.ipAddress" must be a valid ip address of one of the following versions [ipv4] with a optional CIDR')
   })
 })

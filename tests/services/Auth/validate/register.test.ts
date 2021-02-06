@@ -1,6 +1,6 @@
-import Register from '../../../../src/transformers/auth/Register'
+import { register } from '../../../../src/services/Auth/validate'
 
-describe('src/transformers/auth/Register:in', function () {
+describe('src/services/Auth/validate:register', function () {
   it('should resolve', async function () {
     const payload = {
       fullName: 'User Test',
@@ -8,8 +8,7 @@ describe('src/transformers/auth/Register:in', function () {
       phone: '2038853291'
     }
 
-    const instance = new Register()
-    const result = instance.in(payload)
+    const result = register(payload)
     this.assert.deepEqual(result, {
       fullName: 'User Test',
       email: 'test@email.com',
@@ -24,9 +23,8 @@ describe('src/transformers/auth/Register:in', function () {
       phone: '2038853291'
     }
 
-    const instance = new Register()
     this.assert.throws(() => {
-      instance.in(payload)
+      register(payload)
     }, '"email" must be a valid email')
   })
 
@@ -37,9 +35,8 @@ describe('src/transformers/auth/Register:in', function () {
       phone: 'invalid'
     }
 
-    const instance = new Register()
     this.assert.throws(() => {
-      instance.in(payload)
+      register(payload)
     }, '""phone"" did not seem to be a phone number')
   })
 })

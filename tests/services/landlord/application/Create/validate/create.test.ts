@@ -1,6 +1,6 @@
-import ApplicationCreate from '../../../../../src/transformers/landlord/application/Create'
+import { create } from '../../../../../../src/services/landlord/application/Create/validate'
 
-describe('src/transformers/landlord/application/Create:in', function () {
+describe('src/services/landlord/application/Create/validate:create', function () {
   it('should resolve', async function () {
     const startDate = new Date(
       new Date().getFullYear() + 1,
@@ -38,8 +38,7 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
-    const result = instance.in(payload)
+    const result = create(payload)
     this.assert.deepEqual(result, {
       property: {
         address: {
@@ -109,8 +108,7 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
-    const result = instance.in(payload)
+    const result = create(payload)
     this.assert.deepEqual(result, {
       property: {
         address: {
@@ -180,9 +178,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"lease.securityDeposit.amount" must be greater than or equal to 1')
   })
 
@@ -223,9 +220,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"lease.rent.amount" must be greater than or equal to 1')
   })
 
@@ -266,9 +262,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"lease.lengthInMonths" must be greater than or equal to 1')
   })
 
@@ -304,9 +299,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"lease.startDate" must be greater than or equal to "now"')
   })
 
@@ -341,9 +335,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"applicants" does not contain 1 required value(s)')
   })
 
@@ -384,9 +377,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: 50
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"waitPeriodInDays" must be greater than or equal to 1')
   })
 
@@ -427,9 +419,8 @@ describe('src/transformers/landlord/application/Create:in', function () {
       fee: -1
     }
 
-    const instance = new ApplicationCreate()
     this.assert.throws(() => {
-      instance.in(payload)
+      create(payload)
     }, '"fee" must be greater than or equal to 0')
   })
 })

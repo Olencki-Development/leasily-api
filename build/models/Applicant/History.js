@@ -171,9 +171,7 @@ exports.HistorySchema = new mongoose_1.Schema({
             },
             interval: {
                 type: String,
-                enum: [
-                    'weekly', 'bi-weekly', 'monthly', 'yearly'
-                ],
+                enum: ['weekly', 'bi-weekly', 'monthly', 'yearly'],
                 default: null
             }
         },
@@ -184,9 +182,7 @@ exports.HistorySchema = new mongoose_1.Schema({
             },
             interval: {
                 type: String,
-                enum: [
-                    'weekly', 'bi-weekly', 'monthly', 'yearly'
-                ],
+                enum: ['weekly', 'bi-weekly', 'monthly', 'yearly'],
                 default: null
             }
         }
