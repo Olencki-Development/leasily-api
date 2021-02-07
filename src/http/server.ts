@@ -4,6 +4,7 @@ import resolvers from './resolvers'
 import typeDefs from './typeDefs'
 import container from '../container'
 import Auth from '../services/Auth'
+import errorHandler from './errorHandler'
 
 const server = new ApolloServer({
   typeDefs,
@@ -25,7 +26,8 @@ const server = new ApolloServer({
         user: null
       }
     }
-  }
+  },
+  formatError: errorHandler
 })
 const app = express()
 server.applyMiddleware({

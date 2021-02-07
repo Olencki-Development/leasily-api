@@ -7,6 +7,7 @@ const resolvers_1 = require("./resolvers");
 const typeDefs_1 = require("./typeDefs");
 const container_1 = require("../container");
 const Auth_1 = require("../services/Auth");
+const errorHandler_1 = require("./errorHandler");
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: typeDefs_1.default,
     resolvers: resolvers_1.default,
@@ -26,7 +27,8 @@ const server = new apollo_server_express_1.ApolloServer({
                 user: null
             };
         }
-    }
+    },
+    formatError: errorHandler_1.default,
 });
 exports.server = server;
 const app = express();
