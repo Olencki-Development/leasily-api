@@ -1,39 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.server = exports.app = void 0;
-const apollo_server_express_1 = require("apollo-server-express");
+exports.app = void 0;
 const express = require("express");
-const resolvers_1 = require("./resolvers");
-const typeDefs_1 = require("./typeDefs");
-const container_1 = require("../container");
-const Auth_1 = require("../services/Auth");
+const compression = require("compression");
+const helmet = require("helmet");
+const bodyParser = require("body-parser");
+const routes_1 = require("./routes");
 const errorHandler_1 = require("./errorHandler");
-const server = new apollo_server_express_1.ApolloServer({
-    typeDefs: typeDefs_1.default,
-    resolvers: resolvers_1.default,
-    context: async ({ req }) => {
-        const token = req.headers.authorization || '';
-        if (token) {
-            const auth = container_1.default.make(Auth_1.default);
-            const user = auth.validate({
-                token
-            });
-            return {
-                user
-            };
-        }
-        else {
-            return {
-                user: null
-            };
-        }
-    },
-    formatError: errorHandler_1.default,
-});
-exports.server = server;
 const app = express();
 exports.app = app;
-server.applyMiddleware({
-    app
-});
+app.use(helmet());
+app.use(compression());
+app.use(bodyParser.json());
+app.use('/api', routes_1.default);
+app.use(errorHandler_1.default);
 //# sourceMappingURL=server.js.map
