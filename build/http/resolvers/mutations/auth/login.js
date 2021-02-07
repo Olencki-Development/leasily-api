@@ -2,18 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const container_1 = require("../../../../container");
 const Auth_1 = require("../../../../services/Auth");
-const Joi = require("joi");
-const schema = Joi.object({
-    email: Joi.string().email().trim().required()
-});
-async function register(_, args) {
-    const result = schema.validate(args.form);
-    if (result.error) {
-        throw result.error;
-    }
+const validate_1 = require("../../../../services/Auth/validate");
+const result_1 = require("../../../../transformers/result");
+async function login(_, args) {
+    const form = validate_1.login(args.form);
     const auth = container_1.default.make(Auth_1.default);
-    const user = await auth.login(result.value);
-    return user.toJSON();
+    await auth.login(form);
+    return result_1.default('Validation code sent');
 }
-exports.default = register;
+exports.default = login;
 //# sourceMappingURL=login.js.map

@@ -3,7 +3,7 @@ import * as express from 'express'
 import resolvers from './resolvers'
 import typeDefs from './typeDefs'
 import container from '../container'
-import { IUserModel } from '../models/User'
+import Auth from '../services/Auth'
 
 const server = new ApolloServer({
   typeDefs,
@@ -11,12 +11,20 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     const token = req.headers.authorization || ''
 
-    const User = container.make('models').User as IUserModel
-    const user = await User.findOne().exec()
-    if (!user) {
-      throw new Error('whoops')
+    if (token) {
+      const auth = container.make<Auth>(Auth)
+      const user = auth.validate({
+        token
+      })
+
+      return {
+        user
+      }
+    } else {
+      return {
+        user: null
+      }
     }
-    return { user }
   }
 })
 const app = express()

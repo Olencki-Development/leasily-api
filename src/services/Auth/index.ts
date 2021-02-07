@@ -1,28 +1,28 @@
-import { RegisterForm, LoginForm, VerifyForm } from './types'
+import {
+  AuthOptions,
+  RegisterForm,
+  LoginForm,
+  VerifyForm,
+  VerifyResult,
+  ValidateForm,
+  TokenMapping
+} from './types'
 import container from '../../container'
 import { IUser, IUserModel } from '../../models/User'
 import UnauthorizedError from '../../errors/Unauthorized'
 import Verify from '../Verify'
-import validate, { validator } from '../validation'
+import * as jwt from 'jsonwebtoken'
+import ForbiddenError from '../../errors/ForbiddenError'
 
 export default class Auth {
-  async register(form: RegisterForm): Promise<IUser> {
-    const values = validate(
-      validator.object({
-        fullName: validator.string().trim().required(),
-        email: validator.string().email().trim().required(),
-        phone: validator
-          .string()
-          .trim()
-          .phoneNumber({ defaultCountry: 'US', format: 'national' })
-          .required()
-      }),
-      form
-    )
+  private _tokens: TokenMapping = {}
 
+  constructor(private _options: AuthOptions) {}
+
+  async register(form: RegisterForm): Promise<IUser> {
     const User = container.make('models').User as IUserModel
 
-    const user = await User.create(values)
+    const user = await User.create(form)
 
     const verify = container.make<Verify>(Verify)
     await verify.requestEmail({
@@ -33,17 +33,10 @@ export default class Auth {
   }
 
   async login(form: LoginForm): Promise<IUser> {
-    const values = validate(
-      validator.object({
-        email: validator.string().email().trim().required()
-      }),
-      form
-    )
-
     const User = container.make('models').User as IUserModel
 
     const user = await User.findOne({
-      email: values.email
+      email: form.email
     }).exec()
     if (!user) {
       throw new UnauthorizedError()
@@ -57,18 +50,11 @@ export default class Auth {
     return user
   }
 
-  async verify(form: VerifyForm): Promise<IUser> {
-    const values = validate(
-      validator.object({
-        email: validator.string().email().trim().required(),
-        code: validator.string().trim().length(6).required()
-      }),
-      form
-    )
+  async verify(form: VerifyForm): Promise<VerifyResult> {
     const User = container.make('models').User as IUserModel
 
     const user = await User.findOne({
-      email: values.email
+      email: form.email
     }).exec()
     if (!user) {
       throw new UnauthorizedError()
@@ -80,6 +66,41 @@ export default class Auth {
       code: form.code
     })
 
+    const token = this._getToken(user)
+    this._tokens[token] = user.id
+
+    return {
+      user,
+      token
+    }
+  }
+
+  async validate(form: ValidateForm): Promise<IUser> {
+    const userId = this._tokens[form.token]
+    if (!userId) {
+      throw new ForbiddenError()
+    }
+
+    const User = container.make('models').User as IUserModel
+
+    const user = await User.findOne({
+      id: userId
+    }).exec()
+
+    if (!user) {
+      throw new ForbiddenError()
+    }
+
     return user
+  }
+
+  private _getToken(user: IUser) {
+    return jwt.sign(
+      {
+        id: user.id,
+        role: 'user'
+      },
+      this._options.secret
+    )
   }
 }

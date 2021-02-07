@@ -18,7 +18,7 @@ describe('src/services/Auth:login', function () {
       requestEmail
     })
 
-    const instance = new Auth()
+    const instance = new Auth({ secret: 'secret ' })
     try {
       await instance.login({
         email: 'test@email.com'
@@ -48,7 +48,7 @@ describe('src/services/Auth:login', function () {
       requestEmail
     })
 
-    const instance = new Auth()
+    const instance = new Auth({ secret: 'secret ' })
     const result = await instance.login({
       email: 'test@email.com'
     })

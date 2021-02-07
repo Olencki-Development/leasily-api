@@ -1,6 +1,8 @@
 import container from '../../../../container'
 import ApplicationsRetrieve from '../../../../services/landlord/application/Retrieve'
 import { LeasilyContext } from '../../../types'
+import ForbiddenError from '../../../../errors/ForbiddenError'
+import applicationToJson from '../../../../transformers/application'
 
 export default async function applications(
   _: any,
@@ -8,6 +10,9 @@ export default async function applications(
   context: LeasilyContext
 ) {
   const { user } = context
+  if (!user) {
+    throw new ForbiddenError()
+  }
 
   const retrieve = container.make<ApplicationsRetrieve>(ApplicationsRetrieve)
 
@@ -15,12 +20,7 @@ export default async function applications(
     user
   })
 
-  return result.reduce((json: Record<string, any>[], item) => {
-    const temp = {
-      ...item.application.toJSON(),
-      applicants: item.applicants.map((applicant) => applicant.toJSON())
-    }
-    json.push(temp)
-    return json
-  }, [])
+  return result.map((entities) => {
+    return applicationToJson(entities)
+  })
 }

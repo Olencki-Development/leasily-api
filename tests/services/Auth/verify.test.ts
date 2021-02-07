@@ -18,7 +18,7 @@ describe('src/services/Auth:verify', function () {
       requestEmail
     })
 
-    const instance = new Auth()
+    const instance = new Auth({ secret: 'secret ' })
     try {
       await instance.verify({
         email: 'test@email.com',
@@ -30,7 +30,7 @@ describe('src/services/Auth:verify', function () {
     }
   })
 
-  it('should resolve found user', async function () {
+  it('should resolve', async function () {
     const user: any = {
       id: 1
     }
@@ -49,11 +49,14 @@ describe('src/services/Auth:verify', function () {
       validateEmail
     })
 
-    const instance = new Auth()
+    const instance = new Auth({ secret: 'secret ' })
     const result = await instance.verify({
       email: 'test@email.com',
       code: '123456'
     })
-    this.assert.deepEqual(result, user)
+    this.assert.hasAllKeys(result, ['user', 'token'])
+    this.assert.isString(result.token)
+    this.assert.deepEqual(result.user, user)
+    this.assert.lengthOf(Object.keys(instance['_tokens']), 1)
   })
 })

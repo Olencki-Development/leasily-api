@@ -19,7 +19,7 @@ describe('src/services/Auth:register', function () {
       requestEmail
     })
 
-    const instance = new Auth()
+    const instance = new Auth({ secret: 'secret ' })
     const result = await instance.register({
       fullName: 'Test User',
       phone: '1234567890',

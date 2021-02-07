@@ -1,6 +1,10 @@
 import { APPLICATION_STAGES } from '../models/Application'
 import { TimeInterval, EmploymentInterval } from '../models/Applicant/History'
 
+export type ResultMessageJson = {
+  result: string
+}
+
 type ModelJson = {
   id: string
 
