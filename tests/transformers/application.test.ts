@@ -36,6 +36,7 @@ describe('src/transformers/application', function () {
       },
       applicants: [
         {
+          id: 'my_id',
           history: {
             ssn: '123456789',
             dob: new Date(),
@@ -114,7 +115,9 @@ describe('src/transformers/application', function () {
             phone: '1234567890',
             createdAt: new Date(),
             updatedAt: new Date()
-          }
+          },
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ]
     }
@@ -145,6 +148,7 @@ describe('src/transformers/application', function () {
       },
       applicants: [
         {
+          id: 'my_id',
           user: {
             id: 'user-1',
             fullName: 'User #1',
@@ -223,7 +227,9 @@ describe('src/transformers/application', function () {
                 interval: null
               }
             }
-          }
+          },
+          createdAt: payload.applicants[0].createdAt.toISOString(),
+          updatedAt: payload.applicants[0].updatedAt.toISOString()
         }
       ],
       stage: 2,
@@ -267,6 +273,7 @@ describe('src/transformers/application', function () {
       },
       applicants: [
         {
+          id: 'my_id',
           history: null,
           user: {
             id: 'user-1',
@@ -275,7 +282,9 @@ describe('src/transformers/application', function () {
             phone: '1234567890',
             createdAt: new Date(),
             updatedAt: new Date()
-          }
+          },
+          createdAt: new Date(),
+          updatedAt: new Date()
         }
       ]
     }
@@ -306,6 +315,7 @@ describe('src/transformers/application', function () {
       },
       applicants: [
         {
+          id: 'my_id',
           user: {
             id: 'user-1',
             fullName: 'User #1',
@@ -314,7 +324,9 @@ describe('src/transformers/application', function () {
             createdAt: payload.applicants[0].user.createdAt.toISOString(),
             updatedAt: payload.applicants[0].user.updatedAt.toISOString()
           },
-          history: null
+          history: null,
+          createdAt: payload.applicants[0].createdAt.toISOString(),
+          updatedAt: payload.applicants[0].updatedAt.toISOString()
         }
       ],
       stage: 2,

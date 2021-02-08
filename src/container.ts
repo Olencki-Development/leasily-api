@@ -5,6 +5,7 @@ import rentprepProvider from './providers/rentprep'
 import verifyProvider from './providers/verify'
 import authProvider from './providers/auth'
 import landlordProvider from './providers/landlord'
+import renterProvider from './providers/renter'
 
 const container = new Container()
 container
@@ -14,5 +15,6 @@ container
   .provider(verifyProvider)
   .provider(authProvider)
   .provider(landlordProvider)
+  .provider(renterProvider)
 
 export default container
