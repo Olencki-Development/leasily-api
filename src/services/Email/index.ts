@@ -8,6 +8,7 @@ export default class Email {
     return this._client.send({
       to: form.email,
       from: this._fromEmail,
+      subject: form.subject,
       text: form.body,
       attachments: form.attachments
     })

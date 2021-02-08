@@ -14,7 +14,7 @@ type ValdidateCreateType = Omit<CreateForm, 'user' | 'lease'> & {
   }
 }
 
-export function create(form: ValdidateCreateType) {
+export function create(form: ValdidateCreateType): Omit<CreateForm, 'user'> {
   const values = validate(
     validator.object({
       property: validator
@@ -61,5 +61,5 @@ export function create(form: ValdidateCreateType) {
     }),
     form
   )
-  return values
+  return (values as any) as Omit<CreateForm, 'user'>
 }

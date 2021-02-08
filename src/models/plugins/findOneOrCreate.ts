@@ -1,7 +1,7 @@
 import { Schema, FilterQuery } from 'mongoose'
 import { LeasilyModel, LeasilyDocument } from './'
 
-export default async function findOneOrCreate(
+export default function findOneOrCreate(
   schema: Schema<LeasilyDocument, LeasilyModel<LeasilyDocument>>
 ) {
   schema.statics.findOneOrCreate = async function <T extends LeasilyDocument>(

@@ -93,8 +93,11 @@ export type HistoryJson = {
 }
 
 export type ApplicantJson = {
+  id: string
   user: UserJson
   history: HistoryJson | null
+  createdAt: string
+  updatedAt: string
 }
 
 export type LeaseJson = {

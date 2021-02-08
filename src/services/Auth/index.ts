@@ -84,7 +84,7 @@ export default class Auth {
     const User = container.make('models').User as IUserModel
 
     const user = await User.findOne({
-      id: userId
+      _id: userId
     }).exec()
 
     if (!user) {

@@ -116,10 +116,13 @@ export default function toJson(entity: Entity): ApplicationJson {
         }
       }
       return {
+        id: applicant.id,
         user: userToJson({
           user: applicant.user as IUser
         }),
-        history: history
+        history: history,
+        createdAt: applicant.createdAt.toISOString(),
+        updatedAt: applicant.updatedAt.toISOString()
       }
     }),
     stage: entity.application.stage,
