@@ -1,4 +1,4 @@
-import { CompleteForm } from './types'
+import { CompleteForm, CompleteResult } from './types'
 import container from '../../../../container'
 import { IUser } from '../../../../models/User'
 import { ILandlordModel } from '../../../../models/Landlord'
@@ -9,23 +9,29 @@ import {
 } from '../../../../models/Application'
 import NotFoundError from '../../../../errors/NotFoundError'
 import Email from '../../../Email'
+import ApplicationCompleteError from '../../../../errors/ApplicationCompleteError'
 
 export default class ApplicationApply {
   private _email: Email = container.make<Email>(Email)
 
   constructor(private _baseUrl: string) {}
 
-  async complete(form: CompleteForm): Promise<void> {
+  async complete(form: CompleteForm): Promise<CompleteResult> {
     const Applicant = container.make('models').Applicant as IApplicantModel
 
     const applicant = await Applicant.findOne({
-      user: form.user,
-      id: form.applicantId
+      user: form.user.id,
+      _id: form.applicantId
     })
+      .populate('user')
       .populate('application')
       .exec()
     if (!applicant) {
       throw new NotFoundError()
+    }
+    const application = applicant.application as IApplication
+    if (application.stage > APPLICATION_STAGES.AWAITING_COMPLETION) {
+      throw new ApplicationCompleteError()
     }
 
     applicant.history = form.history as any
@@ -35,11 +41,15 @@ export default class ApplicationApply {
       applicant.application as IApplication
     )
     if (isComplete) {
-      const application = applicant.application as IApplication
       application.stage = APPLICATION_STAGES.AWAITING_APPLICATION_REVIEW
       await application.save()
 
       await this._notifyLandlord(application)
+    }
+
+    return {
+      application: applicant.application as IApplication,
+      applicant: applicant
     }
   }
 
@@ -63,7 +73,9 @@ export default class ApplicationApply {
     const Landlord = container.make('models').Landlord as ILandlordModel
     const landlord = await Landlord.findOne({
       application
-    }).exec()
+    })
+      .populate('user')
+      .exec()
     if (!landlord) {
       return
     }

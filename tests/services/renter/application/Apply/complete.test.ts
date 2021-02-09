@@ -1,6 +1,8 @@
 import ApplicationApply from '../../../../../src/services/renter/application/Apply'
 import Email from '../../../../../src/services/Email'
 import NotFoundError from '../../../../../src/errors/NotFoundError'
+import ApplicationCompleteError from '../../../../../src/errors/ApplicationCompleteError'
+import { APPLICATION_STAGES } from '../../../../../src/models/Application'
 
 describe('src/services/renter/application/Apply:complete', function () {
   it('should throw error if applicant is not found', async function () {
@@ -13,7 +15,11 @@ describe('src/services/renter/application/Apply:complete', function () {
       findOne: this.sinon.stub().returns({
         populate: () => {
           return {
-            exec: () => Promise.resolve(null)
+            populate: () => {
+              return {
+                exec: () => Promise.resolve(null)
+              }
+            }
           }
         }
       })
@@ -40,6 +46,52 @@ describe('src/services/renter/application/Apply:complete', function () {
     }
   })
 
+  it('should throw error if applicant has already completed history', async function () {
+    const mockEmail = {
+      send: this.sinon.spy()
+    }
+    this.container.fake(Email, mockEmail)
+
+    const applicant = {
+      application: {
+        stage: APPLICATION_STAGES.REQUESTING_BACKGROUND_CHECK
+      }
+    }
+    const Applicant = {
+      findOne: this.sinon.stub().returns({
+        populate: () => {
+          return {
+            populate: () => {
+              return {
+                exec: () => Promise.resolve(applicant)
+              }
+            }
+          }
+        }
+      })
+    }
+    this.container.fake('models', {
+      Applicant
+    })
+
+    const form: any = {
+      user: {
+        id: 'my-user'
+      },
+      applicantId: 'my-applicant'
+    }
+
+    const baseUrl = 'http://localhost:8000'
+    const apply = new ApplicationApply(baseUrl)
+    try {
+      await apply.complete(form)
+      throw new Error('Unit test failed')
+    } catch (e) {
+      this.assert.instanceOf(e, ApplicationCompleteError)
+      this.assert.called(Applicant.findOne)
+    }
+  })
+
   it('should resolve when not all applicants have completed their history', async function () {
     const mockEmail = {
       send: this.sinon.spy()
@@ -50,14 +102,19 @@ describe('src/services/renter/application/Apply:complete', function () {
       id: 'my-applicant',
       save: this.sinon.spy(),
       application: {
-        id: 'my-application'
+        id: 'my-application',
+        stage: APPLICATION_STAGES.AWAITING_COMPLETION
       }
     }
     const Applicant = {
       findOne: this.sinon.stub().returns({
         populate: () => {
           return {
-            exec: () => Promise.resolve(applicant)
+            populate: () => {
+              return {
+                exec: () => Promise.resolve(applicant)
+              }
+            }
           }
         }
       }),
@@ -107,7 +164,11 @@ describe('src/services/renter/application/Apply:complete', function () {
       findOne: this.sinon.stub().returns({
         populate: () => {
           return {
-            exec: () => Promise.resolve(applicant)
+            populate: () => {
+              return {
+                exec: () => Promise.resolve(applicant)
+              }
+            }
           }
         }
       }),
@@ -123,7 +184,11 @@ describe('src/services/renter/application/Apply:complete', function () {
     }
     const Landlord = {
       findOne: this.sinon.stub().returns({
-        exec: () => Promise.resolve(landlord)
+        populate: () => {
+          return {
+            exec: () => Promise.resolve(landlord)
+          }
+        }
       })
     }
     this.container.fake('models', {
@@ -172,7 +237,11 @@ describe('src/services/renter/application/Apply:complete', function () {
       findOne: this.sinon.stub().returns({
         populate: () => {
           return {
-            exec: () => Promise.resolve(applicant)
+            populate: () => {
+              return {
+                exec: () => Promise.resolve(applicant)
+              }
+            }
           }
         }
       }),
@@ -183,7 +252,11 @@ describe('src/services/renter/application/Apply:complete', function () {
 
     const Landlord = {
       findOne: this.sinon.stub().returns({
-        exec: () => Promise.resolve(null)
+        populate: () => {
+          return {
+            exec: () => Promise.resolve(null)
+          }
+        }
       })
     }
     this.container.fake('models', {

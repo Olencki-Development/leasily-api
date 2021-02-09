@@ -3,6 +3,8 @@ import {
   EmploymentInterval
 } from '../../../../models/Applicant/History'
 import { IUser } from '../../../../models/User'
+import { IApplication } from '../../../../models/Application'
+import { IApplicant } from '../../../../models/Applicant'
 
 export type CompleteForm = {
   user: IUser
@@ -76,4 +78,9 @@ export type CompleteForm = {
       }
     }
   }
+}
+
+export type CompleteResult = {
+  applicant: IApplicant
+  application: IApplication
 }

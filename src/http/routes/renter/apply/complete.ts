@@ -1,18 +1,19 @@
 import { Router } from 'express'
 import container from '../../../../container'
-import { byId as validate } from '../../../../services/renter/application/Retrieve/validate'
-import Retrieve from '../../../../services/renter/application/Retrieve'
+import { complete as validate } from '../../../../services/renter/application/Apply/validate'
+import Apply from '../../../../services/renter/application/Apply'
 import applicationToJson from '../../../../transformers/application'
 
-const router = Router()
+const router = Router({ mergeParams: true })
 
-router.get('/:applicantId', async function (req, res, next) {
+router.post('/', async function (req, res, next) {
   try {
     const form = validate({
-      applicantId: req.params.applicantId
+      applicantId: req.params.applicantId,
+      ...req.body
     })
-    const retrieve = container.make<Retrieve>(Retrieve)
-    const result = await retrieve.byId({
+    const apply = container.make<Apply>(Apply)
+    const result = await apply.complete({
       user: res.locals.user,
       ...form
     })

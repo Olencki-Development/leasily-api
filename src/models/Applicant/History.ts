@@ -6,7 +6,7 @@ export type EmploymentInterval =
   | 'Full Time'
   | 'Part Time'
   | 'Student'
-  | 'Umemployed'
+  | 'Unemployed'
 export type TimeInterval = 'weekly' | 'bi-weekly' | 'monthly' | 'yearly'
 
 export interface IHistory extends LeasilyDocument {
@@ -212,7 +212,7 @@ export const HistorySchema = new Schema<IHistory>(
     employment: {
       status: {
         type: String,
-        enum: ['Full Time', 'Part Time', 'Student', 'Umemployed'],
+        enum: ['Full Time', 'Part Time', 'Student', 'Unemployed'],
         required: true
       },
       employer: {
@@ -244,7 +244,7 @@ export const HistorySchema = new Schema<IHistory>(
         },
         interval: {
           type: String,
-          enum: ['weekly', 'bi-weekly', 'monthly', 'yearly'],
+          enum: ['weekly', 'bi-weekly', 'monthly', 'yearly', null],
           default: null
         }
       },
@@ -255,7 +255,7 @@ export const HistorySchema = new Schema<IHistory>(
         },
         interval: {
           type: String,
-          enum: ['weekly', 'bi-weekly', 'monthly', 'yearly'],
+          enum: ['weekly', 'bi-weekly', 'monthly', 'yearly', null],
           default: null
         }
       }

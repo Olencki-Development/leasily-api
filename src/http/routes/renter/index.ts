@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import applications from './applications'
+import apply from './apply'
 
 const router = Router()
 
-router.use('/applications', applications)
+router.use('/apply/:applicantId', apply)
 
 export default router

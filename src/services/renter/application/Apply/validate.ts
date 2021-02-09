@@ -4,10 +4,10 @@ import validate, { validator } from '../../../validation'
 export function complete(form: Omit<CompleteForm, 'user'>) {
   const values = validate(
     validator.object({
-      applicationId: validator.string().trim().token().required(),
+      applicantId: validator.string().trim().token().required(),
       history: validator
         .object({
-          ssn: validator.string().trim().required(),
+          ssn: validator.ssn.required(),
           dob: validator.date().iso().max('now').required(),
           pets: validator
             .array()
