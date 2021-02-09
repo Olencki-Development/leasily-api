@@ -118,7 +118,12 @@ export default class BackgroundCheck {
     }
 
     application.stage = APPLICATION_STAGES.REQUESTING_BACKGROUND_CHECK
-    return application.save()
+    await application.save()
+
+    return {
+      application,
+      applicants: applicants
+    }
   }
 
   async webhookCallback(form: WebhookForm) {
