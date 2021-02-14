@@ -119,4 +119,9 @@ export type ApplicationJson = ModelJson & {
   stage: APPLICATION_STAGES
   isClosed: boolean
   lease: LeaseJson
+  fee: number
+  waitPeriodInDays: {
+    number: number
+    text: string
+  }
 }

@@ -19,7 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add Renter apply service
 - Add service container
 - Add generic errors
-  - NotFoundError
-  - UnauthorizedError
-  - ApplicationResolvedError
 - Add background check service
+- Add Renter retrieve applications
+- Add Renter apply

@@ -27,7 +27,8 @@ export default async function authorization(
     })
 
     res.locals = {
-      user
+      user,
+      token
     }
 
     return next()

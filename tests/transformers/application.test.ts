@@ -6,6 +6,8 @@ describe('src/transformers/application', function () {
     const payload: any = {
       application: {
         id: 'my_id',
+        fee: 35,
+        waitPeriodInDays: 5,
         property: {
           address: {
             street: '123 Main St',
@@ -234,6 +236,11 @@ describe('src/transformers/application', function () {
       ],
       stage: 2,
       isClosed: false,
+      fee: 35,
+      waitPeriodInDays: {
+        number: 5,
+        text: 'five'
+      },
       createdAt: payload.application.createdAt.toISOString(),
       updatedAt: payload.application.updatedAt.toISOString()
     })
@@ -243,6 +250,8 @@ describe('src/transformers/application', function () {
     const payload: any = {
       application: {
         id: 'my_id',
+        fee: 35,
+        waitPeriodInDays: 5,
         property: {
           address: {
             street: '123 Main St',
@@ -329,6 +338,11 @@ describe('src/transformers/application', function () {
           updatedAt: payload.applicants[0].updatedAt.toISOString()
         }
       ],
+      fee: 35,
+      waitPeriodInDays: {
+        number: 5,
+        text: 'five'
+      },
       stage: 2,
       isClosed: false,
       createdAt: payload.application.createdAt.toISOString(),

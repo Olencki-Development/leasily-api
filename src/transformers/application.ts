@@ -3,6 +3,7 @@ import { IApplicant } from '../models/Applicant'
 import { IApplication } from '../models/Application'
 import { IUser } from '../models/User'
 import userToJson from './user'
+import * as converter from 'number-to-words'
 
 type Entity = {
   application: IApplication
@@ -127,6 +128,11 @@ export default function toJson(entity: Entity): ApplicationJson {
     }),
     stage: entity.application.stage,
     isClosed: entity.application.isClosed,
+    waitPeriodInDays: {
+      number: entity.application.waitPeriodInDays,
+      text: converter.toWords(entity.application.waitPeriodInDays)
+    },
+    fee: entity.application.fee,
     createdAt: entity.application.createdAt.toISOString(),
     updatedAt: entity.application.updatedAt.toISOString()
   }
